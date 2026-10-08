@@ -1,16 +1,24 @@
 import { z } from "zod";
 
-export const expenseSchema = z.object({
-  description: z.string().min(1, "Description is required").max(500),
-  amount: z
-    .string()
-    .min(1, "Amount is required")
-    .refine((v) => !isNaN(Number(v)) && Number(v) > 0, {
-      message: "Amount must be a positive number",
-    }),
-  payment_type_id: z.string().uuid("Please select a payment type"),
-  date: z.string().min(1, "Date is required"),
-  notes: z.string().max(1000).optional(),
-});
+export function createExpenseSchema(t: (key: string) => string) {
+  return z.object({
+    description: z.string().min(1, t("descriptionRequired")).max(500),
+    amount: z
+      .string()
+      .min(1, t("amountRequired"))
+      .refine((v) => !isNaN(Number(v)) && Number(v) > 0, {
+        message: t("amountPositive"),
+      }),
+    payment_type_id: z.string().uuid(t("paymentTypeRequired")),
+    date: z.string().min(1, t("dateRequired")),
+    notes: z.string().max(1000).optional(),
+  });
+}
 
-export type ExpenseFormValues = z.infer<typeof expenseSchema>;
+export type ExpenseFormValues = {
+  description: string;
+  amount: string;
+  payment_type_id: string;
+  date: string;
+  notes?: string;
+};

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getI18n } from "@/lib/i18n.server";
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -22,6 +23,7 @@ export async function login(formData: FormData) {
 
 export async function register(formData: FormData) {
   const supabase = await createClient();
+  const { t } = await getI18n("actions");
 
   const { error } = await supabase.auth.signUp({
     email: formData.get("email") as string,
@@ -32,10 +34,7 @@ export async function register(formData: FormData) {
     return { error: error.message };
   }
 
-  return {
-    success:
-      "Account created! Please check your email to confirm your registration.",
-  };
+  return { success: t("accountCreated") };
 }
 
 export async function logout() {
@@ -47,6 +46,7 @@ export async function logout() {
 
 export async function requestPasswordReset(formData: FormData) {
   const supabase = await createClient();
+  const { t } = await getI18n("actions");
 
   const { error } = await supabase.auth.resetPasswordForEmail(
     formData.get("email") as string,
@@ -57,7 +57,7 @@ export async function requestPasswordReset(formData: FormData) {
     return { error: error.message };
   }
 
-  return { success: "Password reset link sent — check your email." };
+  return { success: t("resetLinkSent") };
 }
 
 export async function confirmPasswordReset(formData: FormData) {

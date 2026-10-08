@@ -2,9 +2,11 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { login } from "@/actions/auth";
 
 export function LoginForm() {
+  const t = useTranslations("auth");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -20,18 +22,18 @@ export function LoginForm() {
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Sign in</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-2">{t("signIn")}</h1>
       <p className="text-sm text-gray-500 mb-6">
-        Don&apos;t have an account?{" "}
+        {t("noAccount")}{" "}
         <Link href="/register" className="text-blue-600 hover:underline">
-          Register
+          {t("register")}
         </Link>
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            Email
+            {t("email")}
           </label>
           <input
             id="email"
@@ -45,7 +47,7 @@ export function LoginForm() {
 
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-            Password
+            {t("password")}
           </label>
           <input
             id="password"
@@ -68,12 +70,12 @@ export function LoginForm() {
           disabled={isPending}
           className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 text-sm transition-colors"
         >
-          {isPending ? "Signing in…" : "Sign in"}
+          {isPending ? t("signingIn") : t("signIn")}
         </button>
 
         <div className="text-center">
           <Link href="/reset-password" className="text-sm text-gray-500 hover:text-gray-700">
-            Forgot your password?
+            {t("forgotPassword")}
           </Link>
         </div>
       </form>

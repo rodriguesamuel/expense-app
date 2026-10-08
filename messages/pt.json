@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "locale": "pt-BR",
+    "currency": "BRL"
+  },
+  "auth": {
+    "signIn": "Entrar",
+    "createAccount": "Criar conta",
+    "email": "E-mail",
+    "password": "Senha",
+    "confirmPassword": "Confirmar senha",
+    "forgotPassword": "Esqueceu sua senha?",
+    "register": "Cadastrar",
+    "noAccount": "Não tem uma conta?",
+    "alreadyAccount": "Já tem uma conta?",
+    "signingIn": "Entrando…",
+    "creatingAccount": "Criando conta…",
+    "passwordsNoMatch": "As senhas não coincidem.",
+    "resetPassword": "Redefinir senha",
+    "setNewPassword": "Definir nova senha",
+    "newPassword": "Nova senha",
+    "sendResetLink": "Enviar link de redefinição",
+    "sending": "Enviando…",
+    "backToSignIn": "Voltar para o login"
+  },
+  "nav": {
+    "appName": "ExpenseTracker",
+    "dashboard": "Painel",
+    "expenses": "Despesas",
+    "paymentTypes": "Formas de Pagamento",
+    "reports": "Relatórios",
+    "signOut": "Sair",
+    "toggleMenu": "Abrir menu"
+  },
+  "dashboard": {
+    "title": "Painel",
+    "welcome": "Bem-vindo(a), {email}",
+    "thisMonth": "Este mês",
+    "expenseCount": "{count, plural, one {# despesa} other {# despesas}}",
+    "quickActions": "Ações rápidas",
+    "newExpense": "+ Nova despesa",
+    "viewReports": "Ver relatórios",
+    "lastSixMonths": "Últimos 6 meses",
+    "recentExpenses": "Despesas recentes",
+    "seeAll": "Ver todas",
+    "noExpenses": "Nenhuma despesa ainda.",
+    "addFirst": "Adicione a primeira."
+  },
+  "expenses": {
+    "title": "Despesas",
+    "addExpense": "+ Adicionar despesa",
+    "loading": "Carregando…",
+    "noExpenses": "Nenhuma despesa encontrada neste período.",
+    "expenseCount": "{count, plural, one {# despesa} other {# despesas}} · Página {page} de {totalPages}",
+    "dateHeader": "Data",
+    "descriptionHeader": "Descrição",
+    "typeHeader": "Tipo",
+    "amountHeader": "Valor",
+    "edit": "Editar"
+  },
+  "expenseForm": {
+    "descriptionLabel": "Descrição",
+    "amountLabel": "Valor ({currency})",
+    "paymentTypeLabel": "Forma de pagamento",
+    "dateLabel": "Data",
+    "notesLabel": "Observações",
+    "descriptionPlaceholder": "ex: Compras no mercado",
+    "amountPlaceholder": "0,00",
+    "paymentTypePlaceholder": "Selecione uma forma de pagamento…",
+    "notesPlaceholder": "Observações opcionais…",
+    "saving": "Salvando…",
+    "updateExpense": "Atualizar despesa",
+    "addExpense": "Adicionar despesa",
+    "cancel": "Cancelar"
+  },
+  "filters": {
+    "from": "De",
+    "to": "Até",
+    "paymentType": "Forma de pagamento",
+    "allTypes": "Todos os tipos"
+  },
+  "paymentTypes": {
+    "title": "Formas de Pagamento",
+    "addType": "+ Adicionar tipo",
+    "newType": "Nova forma de pagamento",
+    "nameHeader": "Nome",
+    "typeHeader": "Tipo",
+    "default": "Padrão",
+    "custom": "Personalizado",
+    "edit": "Editar"
+  },
+  "paymentTypeForm": {
+    "nameLabel": "Nome",
+    "namePlaceholder": "ex: Vale, Criptomoeda…",
+    "cancel": "Cancelar",
+    "saving": "Salvando…",
+    "update": "Atualizar",
+    "create": "Criar"
+  },
+  "deleteExpense": {
+    "delete": "Excluir",
+    "cancel": "Cancelar"
+  },
+  "deletePaymentType": {
+    "delete": "Excluir",
+    "confirm": "Excluir \"{name}\"?",
+    "yes": "Sim",
+    "no": "Não",
+    "ok": "OK"
+  },
+  "reports": {
+    "title": "Relatórios",
+    "from": "De",
+    "to": "Até",
+    "failedLoad": "Falha ao carregar os dados do relatório.",
+    "loading": "Carregando…",
+    "byPaymentType": "Por forma de pagamento",
+    "monthlyBreakdown": "Resumo mensal",
+    "detailByType": "Detalhes por forma de pagamento",
+    "typeHeader": "Tipo",
+    "countHeader": "Qtd",
+    "totalHeader": "Total",
+    "percentHeader": "%",
+    "noExpenses": "Nenhuma despesa neste período.",
+    "exportCsv": "⬇ Exportar CSV"
+  },
+  "summaryCards": {
+    "total": "Total",
+    "expenses": "Despesas",
+    "dailyAverage": "Média diária"
+  },
+  "charts": {
+    "total": "Total"
+  },
+  "validation": {
+    "descriptionRequired": "Descrição é obrigatória",
+    "amountRequired": "Valor é obrigatório",
+    "amountPositive": "O valor deve ser um número positivo",
+    "paymentTypeRequired": "Selecione uma forma de pagamento",
+    "dateRequired": "Data é obrigatória",
+    "nameRequired": "Nome é obrigatório"
+  },
+  "actions": {
+    "accountCreated": "Conta criada! Verifique seu e-mail para confirmar o cadastro.",
+    "resetLinkSent": "Link de redefinição enviado — verifique seu e-mail.",
+    "duplicatePaymentType": "Já existe uma forma de pagamento com este nome.",
+    "deleteBlocked": "{count, plural, one {Não é possível excluir: # despesa usa esta forma de pagamento.} other {Não é possível excluir: # despesas usam esta forma de pagamento.}} Reatribua ou exclua as despesas primeiro."
+  },
+  "common": {
+    "notFound": "Despesa não encontrada",
+    "backToExpenses": "Voltar para despesas",
+    "somethingWentWrong": "Algo deu errado",
+    "tryAgain": "Tentar novamente",
+    "newExpense": "Nova Despesa",
+    "editExpense": "Editar Despesa"
+  }
+}

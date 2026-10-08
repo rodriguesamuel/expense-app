@@ -3,13 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { expenseSchema } from "@/lib/validations/expense";
+import { createExpenseSchema } from "@/lib/validations/expense";
+import { getI18n } from "@/lib/i18n.server";
 import type { ActionResult } from "@/types";
 
 export async function createExpense(formData: FormData): Promise<ActionResult> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  const { t } = await getI18n("validation");
+  const expenseSchema = createExpenseSchema(t);
 
   const raw = {
     description: formData.get("description") as string,
@@ -49,6 +53,9 @@ export async function updateExpense(
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  const { t } = await getI18n("validation");
+  const expenseSchema = createExpenseSchema(t);
 
   const raw = {
     description: formData.get("description") as string,

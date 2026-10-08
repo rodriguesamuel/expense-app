@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "locale": "en-US",
+    "currency": "USD"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot your password?",
+    "register": "Register",
+    "noAccount": "Don't have an account?",
+    "alreadyAccount": "Already have an account?",
+    "signingIn": "Signing in…",
+    "creatingAccount": "Creating account…",
+    "passwordsNoMatch": "Passwords do not match.",
+    "resetPassword": "Reset password",
+    "setNewPassword": "Set new password",
+    "newPassword": "New password",
+    "sendResetLink": "Send reset link",
+    "sending": "Sending…",
+    "backToSignIn": "Back to sign in"
+  },
+  "nav": {
+    "appName": "ExpenseTracker",
+    "dashboard": "Dashboard",
+    "expenses": "Expenses",
+    "paymentTypes": "Payment Types",
+    "reports": "Reports",
+    "signOut": "Sign out",
+    "toggleMenu": "Toggle menu"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {email}",
+    "thisMonth": "This month",
+    "expenseCount": "{count, plural, one {# expense} other {# expenses}}",
+    "quickActions": "Quick actions",
+    "newExpense": "+ New expense",
+    "viewReports": "View reports",
+    "lastSixMonths": "Last 6 months",
+    "recentExpenses": "Recent expenses",
+    "seeAll": "See all",
+    "noExpenses": "No expenses yet.",
+    "addFirst": "Add your first one."
+  },
+  "expenses": {
+    "title": "Expenses",
+    "addExpense": "+ Add expense",
+    "loading": "Loading…",
+    "noExpenses": "No expenses found for this period.",
+    "expenseCount": "{count, plural, one {# expense} other {# expenses}} · Page {page} of {totalPages}",
+    "dateHeader": "Date",
+    "descriptionHeader": "Description",
+    "typeHeader": "Type",
+    "amountHeader": "Amount",
+    "edit": "Edit"
+  },
+  "expenseForm": {
+    "descriptionLabel": "Description",
+    "amountLabel": "Amount ({currency})",
+    "paymentTypeLabel": "Payment type",
+    "dateLabel": "Date",
+    "notesLabel": "Notes",
+    "descriptionPlaceholder": "e.g. Grocery shopping",
+    "amountPlaceholder": "0.00",
+    "paymentTypePlaceholder": "Select a payment type…",
+    "notesPlaceholder": "Optional notes…",
+    "saving": "Saving…",
+    "updateExpense": "Update expense",
+    "addExpense": "Add expense",
+    "cancel": "Cancel"
+  },
+  "filters": {
+    "from": "From",
+    "to": "To",
+    "paymentType": "Payment type",
+    "allTypes": "All types"
+  },
+  "paymentTypes": {
+    "title": "Payment Types",
+    "addType": "+ Add type",
+    "newType": "New payment type",
+    "nameHeader": "Name",
+    "typeHeader": "Type",
+    "default": "Default",
+    "custom": "Custom",
+    "edit": "Edit"
+  },
+  "paymentTypeForm": {
+    "nameLabel": "Name",
+    "namePlaceholder": "e.g. Voucher, Crypto…",
+    "cancel": "Cancel",
+    "saving": "Saving…",
+    "update": "Update",
+    "create": "Create"
+  },
+  "deleteExpense": {
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "deletePaymentType": {
+    "delete": "Delete",
+    "confirm": "Delete \"{name}\"?",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK"
+  },
+  "reports": {
+    "title": "Reports",
+    "from": "From",
+    "to": "To",
+    "failedLoad": "Failed to load report data.",
+    "loading": "Loading…",
+    "byPaymentType": "By payment type",
+    "monthlyBreakdown": "Monthly breakdown",
+    "detailByType": "Detail by payment type",
+    "typeHeader": "Type",
+    "countHeader": "Count",
+    "totalHeader": "Total",
+    "percentHeader": "%",
+    "noExpenses": "No expenses in this period.",
+    "exportCsv": "⬇ Export CSV"
+  },
+  "summaryCards": {
+    "total": "Total",
+    "expenses": "Expenses",
+    "dailyAverage": "Daily average"
+  },
+  "charts": {
+    "total": "Total"
+  },
+  "validation": {
+    "descriptionRequired": "Description is required",
+    "amountRequired": "Amount is required",
+    "amountPositive": "Amount must be a positive number",
+    "paymentTypeRequired": "Please select a payment type",
+    "dateRequired": "Date is required",
+    "nameRequired": "Name is required"
+  },
+  "actions": {
+    "accountCreated": "Account created! Please check your email to confirm your registration.",
+    "resetLinkSent": "Password reset link sent — check your email.",
+    "duplicatePaymentType": "A payment type with this name already exists.",
+    "deleteBlocked": "{count, plural, one {Cannot delete: # expense uses this payment type.} other {Cannot delete: # expenses use this payment type.}} Reassign or delete them first."
+  },
+  "common": {
+    "notFound": "Expense not found",
+    "backToExpenses": "Back to expenses",
+    "somethingWentWrong": "Something went wrong",
+    "tryAgain": "Try again",
+    "newExpense": "New Expense",
+    "editExpense": "Edit Expense"
+  }
+}

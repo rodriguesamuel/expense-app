@@ -1,0 +1,65 @@
+"use client";
+
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { monthStartISO, monthEndISO } from "@/lib/utils";
+import type { PaymentType } from "@/types";
+
+interface Props {
+  paymentTypes: PaymentType[];
+}
+
+export function ExpenseFilters({ paymentTypes }: Props) {
+  const t = useTranslations("filters");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  function update(key: string, value: string) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  }
+
+  return (
+    <div className="flex flex-wrap gap-3 items-end">
+      <div>
+        <label className="block text-xs font-medium text-gray-500 mb-1">{t("from")}</label>
+        <input
+          type="date"
+          defaultValue={searchParams.get("date_from") ?? monthStartISO()}
+          onChange={(e) => update("date_from", e.target.value)}
+          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label className="block text-xs font-medium text-gray-500 mb-1">{t("to")}</label>
+        <input
+          type="date"
+          defaultValue={searchParams.get("date_to") ?? monthEndISO()}
+          onChange={(e) => update("date_to", e.target.value)}
+          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label className="block text-xs font-medium text-gray-500 mb-1">{t("paymentType")}</label>
+        <select
+          defaultValue={searchParams.get("payment_type_id") ?? ""}
+          onChange={(e) => update("payment_type_id", e.target.value)}
+          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        >
+          <option value="">{t("allTypes")}</option>
+          {paymentTypes.map((pt) => (
+            <option key={pt.id} value={pt.id}>
+              {pt.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+}

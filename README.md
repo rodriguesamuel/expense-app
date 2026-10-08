@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expense Tracker
 
-## Getting Started
+Personal expense tracking app built with Next.js 16 + Supabase.
 
-First, run the development server:
+## Features
+
+- Email/password auth with password reset
+- Expense CRUD with date, amount, description, payment type
+- Customizable payment types (5 defaults + add your own)
+- Reports with charts and CSV export
+- Responsive design (mobile + desktop)
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Server Actions)
+- **Database + Auth**: Supabase (PostgreSQL + RLS)
+- **UI**: Tailwind CSS v4
+- **Charts**: Recharts
+- **Hosting**: Vercel (free)
+
+## Setup
+
+### 1. Supabase
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Run `supabase/migrations/001_initial_schema.sql` in the SQL Editor
+3. Enable `pg_cron` extension and run the keepalive query:
+   ```sql
+   SELECT cron.schedule('keepalive', '0 12 */4 * *', 'SELECT 1');
+   ```
+4. Copy Project URL and anon key from Project Settings → API
+
+### 2. Local development
 
 ```bash
+npm install
+cp .env.example .env.local
+# Fill in NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push to GitHub
+2. Import repo at [vercel.com](https://vercel.com)
+3. Add environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`
+4. Deploy — auto-deploys on every `git push`
+5. Update Supabase Auth settings → Site URL and Redirect URLs to your Vercel domain
 
-## Learn More
+## Free tier limits
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Service | Limit |
+|---|---|
+| Vercel Hobby | 100 GB bandwidth/month |
+| Supabase Free | 500 MB DB (~2.5M expense rows), 50K MAU |
+| Supabase Free | Project pauses after 7 days inactivity → fixed by pg_cron keepalive |

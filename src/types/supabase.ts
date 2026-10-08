@@ -22,26 +22,42 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
+          id?: string | undefined;
           user_id: string;
           description: string;
           amount: number;
           payment_type_id: string;
-          date?: string;
-          notes?: string | null;
-          created_at?: string;
-          updated_at?: string;
+          date?: string | undefined;
+          notes?: string | null | undefined;
+          created_at?: string | undefined;
+          updated_at?: string | undefined;
         };
         Update: {
-          id?: string;
-          user_id?: string;
-          description?: string;
-          amount?: number;
-          payment_type_id?: string;
-          date?: string;
-          notes?: string | null;
-          updated_at?: string;
+          id?: string | undefined;
+          user_id?: string | undefined;
+          description?: string | undefined;
+          amount?: number | undefined;
+          payment_type_id?: string | undefined;
+          date?: string | undefined;
+          notes?: string | null | undefined;
+          updated_at?: string | undefined;
         };
+        Relationships: [
+          {
+            foreignKeyName: "expenses_payment_type_id_fkey";
+            columns: ["payment_type_id"];
+            isOneToOne: false;
+            referencedRelation: "payment_types";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "expenses_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       payment_types: {
         Row: {
@@ -53,20 +69,29 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
+          id?: string | undefined;
           user_id: string;
           name: string;
-          is_system?: boolean;
-          created_at?: string;
-          updated_at?: string;
+          is_system?: boolean | undefined;
+          created_at?: string | undefined;
+          updated_at?: string | undefined;
         };
         Update: {
-          id?: string;
-          user_id?: string;
-          name?: string;
-          is_system?: boolean;
-          updated_at?: string;
+          id?: string | undefined;
+          user_id?: string | undefined;
+          name?: string | undefined;
+          is_system?: boolean | undefined;
+          updated_at?: string | undefined;
         };
+        Relationships: [
+          {
+            foreignKeyName: "payment_types_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
     };
     Views: {
@@ -83,10 +108,12 @@ export interface Database {
           payment_type_id: string;
           payment_type_name: string;
         };
+        Relationships: [];
       };
     };
     Functions: Record<string, never>;
     Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }
 

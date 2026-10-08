@@ -5,6 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function getLocaleConfig(locale: string) {
+  return locale === "en"
+    ? { intlLocale: "en-US", currency: "USD" }
+    : { intlLocale: "pt-BR", currency: "BRL" };
+}
+
 export function formatCurrency(amount: number, locale = "pt-BR", currency = "BRL") {
   return new Intl.NumberFormat(locale, {
     style: "currency",
