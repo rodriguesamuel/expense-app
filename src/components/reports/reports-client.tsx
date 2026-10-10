@@ -6,6 +6,8 @@ import { monthStartISO, monthEndISO, formatCurrency, getLocaleConfig } from "@/l
 import { SummaryCards } from "./summary-cards";
 import { PaymentTypePie } from "./payment-type-pie";
 import { MonthlyBarChart } from "./monthly-bar-chart";
+import { DescriptionBarChart } from "./description-bar-chart";
+import { DescriptionTable } from "./description-table";
 import { CsvExportBtn } from "./csv-export-btn";
 import type { ReportSummary } from "@/types";
 
@@ -21,15 +23,40 @@ export function ReportsClient() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let ignore = false;
     if (!dateFrom || !dateTo) return;
-    setLoading(true);
-    setError(null);
+
+    const controller = new AbortController();
     const params = new URLSearchParams({ date_from: dateFrom, date_to: dateTo });
-    fetch(`/api/reports/summary?${params.toString()}`)
-      .then((r) => r.json())
-      .then(setSummary)
-      .catch(() => setError(t("failedLoad")))
-      .finally(() => setLoading(false));
+
+    Promise.resolve().then(() => {
+      if (!ignore) {
+        setLoading(true);
+        setError(null);
+      }
+    });
+
+    fetch(`/api/reports/summary?${params.toString()}`, { signal: controller.signal })
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed to load");
+        return r.json();
+      })
+      .then((data) => {
+        if (!ignore) setSummary(data);
+      })
+      .catch((err) => {
+        if (!ignore && err?.name !== "AbortError") {
+          setError(t("failedLoad"));
+        }
+      })
+      .finally(() => {
+        if (!ignore) setLoading(false);
+      });
+
+    return () => {
+      ignore = true;
+      controller.abort();
+    };
   }, [dateFrom, dateTo, t]);
 
   return (
@@ -142,6 +169,35 @@ export function ReportsClient() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          )}
+
+          {summary.byDescription && summary.byDescription.length > 0 && (
+            <div className="space-y-4 pt-2">
+              <div className="border-t border-gray-200 pt-6">
+                <h2 className="text-lg font-bold text-gray-900">
+                  {t("byDescriptionSection")}
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div className="bg-white rounded-xl border border-gray-200 p-6">
+                  <h3 className="text-base font-semibold text-gray-800 mb-4">
+                    {t("byDescriptionChart")}
+                  </h3>
+                  <DescriptionBarChart
+                    data={summary.byDescription}
+                    intlLocale={intlLocale}
+                    currency={currency}
+                  />
+                </div>
+
+                <DescriptionTable
+                  data={summary.byDescription}
+                  intlLocale={intlLocale}
+                  currency={currency}
+                />
               </div>
             </div>
           )}

@@ -6,6 +6,13 @@ export interface ExpenseFilters {
   paymentTypeId?: string;
 }
 
+export interface DescriptionSummaryItem {
+  description: string;
+  total: number;
+  count: number;
+  percentage: number;
+}
+
 export interface ReportSummary {
   period: { from: string; to: string };
   total: number;
@@ -23,6 +30,7 @@ export interface ReportSummary {
     total: number;
     count: number;
   }[];
+  byDescription: DescriptionSummaryItem[];
 }
 
 export interface ActionResult<T = void> {

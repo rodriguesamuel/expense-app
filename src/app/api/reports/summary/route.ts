@@ -72,6 +72,31 @@ export async function GET(request: NextRequest) {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([month, d]) => ({ month, total: Number(d.total.toFixed(2)), count: d.count }));
 
+  // Group by description
+  const descMap: Record<string, { description: string; total: number; count: number }> = {};
+  for (const e of rows) {
+    const rawDesc = (e.description ?? "").trim();
+    if (!rawDesc) continue;
+    const key = rawDesc.toLowerCase();
+    if (!descMap[key]) {
+      descMap[key] = {
+        description: rawDesc,
+        total: 0,
+        count: 0,
+      };
+    }
+    descMap[key].total += Number(e.amount);
+    descMap[key].count += 1;
+  }
+  const byDescription = Object.values(descMap)
+    .sort((a, b) => b.total - a.total)
+    .map((d) => ({
+      description: d.description,
+      total: Number(d.total.toFixed(2)),
+      count: d.count,
+      percentage: total > 0 ? Number(((d.total / total) * 100).toFixed(1)) : 0,
+    }));
+
   const summary: ReportSummary = {
     period: { from: dateFrom, to: dateTo },
     total: Number(total.toFixed(2)),
@@ -79,6 +104,7 @@ export async function GET(request: NextRequest) {
     dailyAverage: Number(dailyAverage.toFixed(2)),
     byPaymentType,
     byMonth,
+    byDescription,
   };
 
   return NextResponse.json(summary);
