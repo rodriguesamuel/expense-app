@@ -25,11 +25,14 @@ export function DeleteExpenseBtn({ id }: Props) {
         <button
           onClick={handleDelete}
           disabled={isPending}
-          className="text-red-600 hover:text-red-800 font-medium"
+          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium"
         >
           {isPending ? "…" : t("delete")}
         </button>
-        <button onClick={() => setConfirm(false)} className="text-gray-500">
+        <button
+          onClick={() => setConfirm(false)}
+          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+        >
           {t("cancel")}
         </button>
       </span>
@@ -39,7 +42,7 @@ export function DeleteExpenseBtn({ id }: Props) {
   return (
     <button
       onClick={() => setConfirm(true)}
-      className="text-sm text-red-500 hover:text-red-700"
+      className="text-sm text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
     >
       {t("delete")}
     </button>

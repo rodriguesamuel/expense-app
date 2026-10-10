@@ -48,7 +48,7 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
 
   if (!expenses?.length) {
     return (
-      <div className="text-center py-16 text-gray-400">
+      <div className="text-center py-16 text-gray-400 dark:text-gray-500">
         {t("noExpenses")}
       </div>
     );
@@ -56,31 +56,31 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
 
   return (
     <div className="space-y-4">
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-gray-500 dark:text-gray-400">
         {t("expenseCount", { count: count ?? 0, page, totalPages })}
       </div>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
         {/* Mobile card list */}
-        <div className="divide-y divide-gray-100 md:hidden">
+        <div className="divide-y divide-gray-100 dark:divide-gray-800 md:hidden">
           {expenses.map((e) => (
             <div key={e.id} className="p-4 space-y-2">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <p className="font-medium text-gray-900 text-sm truncate">{e.description}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{formatDate(e.date, intlLocale)}</p>
+                  <p className="font-medium text-gray-900 dark:text-white text-sm truncate">{e.description}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{formatDate(e.date, intlLocale)}</p>
                 </div>
-                <span className="font-semibold text-gray-900 text-sm shrink-0">
+                <span className="font-semibold text-gray-900 dark:text-white text-sm shrink-0">
                   {formatCurrency(Number(e.amount), intlLocale, currency)}
                 </span>
               </div>
               <div className="flex items-center justify-between pt-1">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 max-w-[150px] truncate">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 max-w-[150px] truncate">
                   {e.payment_type_name}
                 </span>
                 <div className="flex items-center gap-3 shrink-0">
                   <Link
                     href={`/expenses/${e.id}`}
-                    className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                    className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                   >
                     {t("edit")}
                   </Link>
@@ -94,33 +94,33 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
         {/* Desktop table view */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
               <tr>
-                <th className="text-left px-6 py-3 font-medium text-gray-500">{t("dateHeader")}</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-500">{t("descriptionHeader")}</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-500">{t("typeHeader")}</th>
-                <th className="text-right px-6 py-3 font-medium text-gray-500">{t("amountHeader")}</th>
+                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("dateHeader")}</th>
+                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("descriptionHeader")}</th>
+                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("typeHeader")}</th>
+                <th className="text-right px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("amountHeader")}</th>
                 <th className="px-6 py-3" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {expenses.map((e) => (
-                <tr key={e.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-3 text-gray-500 whitespace-nowrap">
+                <tr key={e.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {formatDate(e.date, intlLocale)}
                   </td>
-                  <td className="px-6 py-3 font-medium text-gray-900 max-w-xs truncate">
+                  <td className="px-6 py-3 font-medium text-gray-900 dark:text-white max-w-xs truncate">
                     {e.description}
                   </td>
-                  <td className="px-6 py-3 text-gray-600">{e.payment_type_name}</td>
-                  <td className="px-6 py-3 text-right font-semibold text-gray-900">
+                  <td className="px-6 py-3 text-gray-600 dark:text-gray-400">{e.payment_type_name}</td>
+                  <td className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-white">
                     {formatCurrency(Number(e.amount), intlLocale, currency)}
                   </td>
                   <td className="px-6 py-3">
                     <div className="flex gap-3 justify-end">
                       <Link
                         href={`/expenses/${e.id}`}
-                        className="text-sm text-blue-600 hover:text-blue-800"
+                        className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                       >
                         {t("edit")}
                       </Link>
@@ -160,10 +160,10 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t("title")}</h1>
         <Link
           href="/expenses/new"
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shrink-0"
+          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shrink-0 transition-colors"
         >
           {t("addExpense")}
         </Link>
@@ -173,7 +173,7 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
         <ExpenseFilters paymentTypes={paymentTypes ?? []} />
       </Suspense>
 
-      <Suspense fallback={<div className="text-gray-400 py-8 text-center">{t("loading")}</div>}>
+      <Suspense fallback={<div className="text-gray-400 dark:text-gray-500 py-8 text-center">{t("loading")}</div>}>
         <ExpenseTable
           userId={user.id}
           dateFrom={dateFrom}

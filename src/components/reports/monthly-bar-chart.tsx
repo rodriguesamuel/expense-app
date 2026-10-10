@@ -23,10 +23,10 @@ export function MonthlyBarChart({ data, intlLocale = "pt-BR", currency = "BRL" }
   return (
     <ResponsiveContainer width="100%" height={220}>
       <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
-        <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid, #e5e7eb)" vertical={false} />
+        <XAxis dataKey="month" tick={{ fontSize: 12, fill: "var(--chart-axis, #6b7280)" }} axisLine={false} tickLine={false} />
         <YAxis
-          tick={{ fontSize: 11, fill: "#6b7280" }}
+          tick={{ fontSize: 11, fill: "var(--chart-axis, #6b7280)" }}
           axisLine={false}
           tickLine={false}
           tickFormatter={(v) =>
@@ -38,7 +38,16 @@ export function MonthlyBarChart({ data, intlLocale = "pt-BR", currency = "BRL" }
             new Intl.NumberFormat(intlLocale, { style: "currency", currency }).format(Number(v)),
             t("total"),
           ]}
-          contentStyle={{ fontSize: 12, borderRadius: 8 }}
+          contentStyle={{
+            fontSize: 12,
+            borderRadius: 8,
+            backgroundColor: "var(--chart-tooltip-bg, #ffffff)",
+            borderColor: "var(--chart-tooltip-border, #e5e7eb)",
+            color: "var(--chart-tooltip-text, #111827)",
+          }}
+          itemStyle={{
+            color: "var(--chart-tooltip-text, #111827)",
+          }}
         />
         <Bar dataKey="total" fill="#3b82f6" radius={[4, 4, 0, 0]} />
       </BarChart>

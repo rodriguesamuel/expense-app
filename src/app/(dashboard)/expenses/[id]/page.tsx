@@ -37,7 +37,7 @@ export default async function EditExpensePage({ params }: PageProps) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">{t("editExpense")}</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t("editExpense")}</h1>
       <ExpenseForm paymentTypes={paymentTypes ?? []} existing={expense} />
     </div>
   );

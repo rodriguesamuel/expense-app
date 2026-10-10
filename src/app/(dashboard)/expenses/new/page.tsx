@@ -22,7 +22,7 @@ export default async function NewExpensePage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">{t("newExpense")}</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t("newExpense")}</h1>
       <ExpenseForm paymentTypes={paymentTypes ?? []} />
     </div>
   );

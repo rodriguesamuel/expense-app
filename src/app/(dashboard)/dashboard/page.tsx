@@ -72,34 +72,34 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6 sm:space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t("title")}</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           {t("welcome", { email: user.email ?? "" })}
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
-          <p className="text-sm text-gray-500">{t("thisMonth")}</p>
-          <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 truncate">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t("thisMonth")}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1 truncate">
             {formatCurrency(monthTotal, intlLocale, currency)}
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
             {t("expenseCount", { count: expenseCount })}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 flex flex-col justify-between gap-3">
-          <p className="text-sm text-gray-500">{t("quickActions")}</p>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 flex flex-col justify-between gap-3">
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t("quickActions")}</p>
           <div className="flex gap-2">
             <Link
               href="/expenses/new"
-              className="flex-1 text-center px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
+              className="flex-1 text-center px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
             >
               {t("newExpense")}
             </Link>
             <Link
               href="/reports"
-              className="flex-1 text-center px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg"
+              className="flex-1 text-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
             >
               {t("viewReports")}
             </Link>
@@ -108,8 +108,8 @@ export default async function DashboardPage() {
       </div>
 
       {monthlyChartData.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 min-w-0">
-          <h2 className="text-base font-semibold text-gray-800 mb-4">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 min-w-0">
+          <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4">
             {t("lastSixMonths")}
           </h2>
           <div className="w-full min-w-0 h-[220px]">
@@ -118,29 +118,29 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-800">{t("recentExpenses")}</h2>
-          <Link href="/expenses" className="text-sm font-medium text-blue-600 hover:underline">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-100 dark:border-gray-800">
+          <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200">{t("recentExpenses")}</h2>
+          <Link href="/expenses" className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
             {t("seeAll")}
           </Link>
         </div>
         {recentExpenses?.length ? (
           <>
             {/* Mobile list view */}
-            <div className="divide-y divide-gray-100 md:hidden">
+            <div className="divide-y divide-gray-100 dark:divide-gray-800 md:hidden">
               {recentExpenses.map((e) => (
                 <div key={e.id} className="p-4 flex items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <p className="font-medium text-gray-900 truncate text-sm">{e.description}</p>
-                    <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-500">
+                    <p className="font-medium text-gray-900 dark:text-white truncate text-sm">{e.description}</p>
+                    <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-500 dark:text-gray-400">
                       <span>{formatDate(e.date, intlLocale)}</span>
                       <span>•</span>
                       <span className="truncate">{e.payment_type_name}</span>
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <span className="font-semibold text-gray-900 text-sm">
+                    <span className="font-semibold text-gray-900 dark:text-white text-sm">
                       {formatCurrency(Number(e.amount), intlLocale, currency)}
                     </span>
                   </div>
@@ -151,17 +151,17 @@ export default async function DashboardPage() {
             {/* Desktop table view */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-sm">
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                   {recentExpenses.map((e) => (
-                    <tr key={e.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-3 text-gray-500 whitespace-nowrap">
+                    <tr key={e.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                      <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                         {formatDate(e.date, intlLocale)}
                       </td>
-                      <td className="px-6 py-3 font-medium text-gray-900 max-w-xs truncate">
+                      <td className="px-6 py-3 font-medium text-gray-900 dark:text-white max-w-xs truncate">
                         {e.description}
                       </td>
-                      <td className="px-6 py-3 text-gray-500">{e.payment_type_name}</td>
-                      <td className="px-6 py-3 text-right font-semibold text-gray-900">
+                      <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{e.payment_type_name}</td>
+                      <td className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-white">
                         {formatCurrency(Number(e.amount), intlLocale, currency)}
                       </td>
                     </tr>
@@ -171,9 +171,9 @@ export default async function DashboardPage() {
             </div>
           </>
         ) : (
-          <p className="text-center py-10 text-sm text-gray-400">
+          <p className="text-center py-10 text-sm text-gray-400 dark:text-gray-500">
             {t("noExpenses")}{" "}
-            <Link href="/expenses/new" className="text-blue-600 hover:underline">
+            <Link href="/expenses/new" className="text-blue-600 dark:text-blue-400 hover:underline">
               {t("addFirst")}
             </Link>
           </p>

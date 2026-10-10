@@ -27,9 +27,9 @@ export function DeletePaymentTypeBtn({ id, name }: Props) {
 
   if (error) {
     return (
-      <span className="text-xs text-red-600 max-w-xs" title={error}>
+      <span className="text-xs text-red-600 dark:text-red-400 max-w-xs" title={error}>
         ⚠ {error.slice(0, 60)}…{" "}
-        <button onClick={() => setError(null)} className="underline">
+        <button onClick={() => setError(null)} className="underline hover:text-red-800 dark:hover:text-red-300">
           {t("ok")}
         </button>
       </span>
@@ -39,15 +39,18 @@ export function DeletePaymentTypeBtn({ id, name }: Props) {
   if (confirm) {
     return (
       <span className="flex items-center gap-1 text-sm">
-        <span className="text-gray-600">{t("confirm", { name })}</span>
+        <span className="text-gray-600 dark:text-gray-400">{t("confirm", { name })}</span>
         <button
           onClick={handleDelete}
           disabled={isPending}
-          className="text-red-600 hover:text-red-800 font-medium"
+          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium"
         >
           {isPending ? "…" : t("yes")}
         </button>
-        <button onClick={() => setConfirm(false)} className="text-gray-500 hover:text-gray-700">
+        <button
+          onClick={() => setConfirm(false)}
+          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+        >
           {t("no")}
         </button>
       </span>
@@ -57,7 +60,7 @@ export function DeletePaymentTypeBtn({ id, name }: Props) {
   return (
     <button
       onClick={() => setConfirm(true)}
-      className="text-sm text-red-500 hover:text-red-700"
+      className="text-sm text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
     >
       {t("delete")}
     </button>

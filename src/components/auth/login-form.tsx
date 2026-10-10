@@ -21,18 +21,18 @@ export function LoginForm() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">{t("signIn")}</h1>
-      <p className="text-sm text-gray-500 mb-6">
+    <div className="bg-white dark:bg-gray-900 border border-transparent dark:border-gray-800 rounded-2xl shadow-md p-8">
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t("signIn")}</h1>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
         {t("noAccount")}{" "}
-        <Link href="/register" className="text-blue-600 hover:underline">
+        <Link href="/register" className="text-blue-600 dark:text-blue-400 hover:underline">
           {t("register")}
         </Link>
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {t("email")}
           </label>
           <input
@@ -41,12 +41,12 @@ export function LoginForm() {
             type="email"
             autoComplete="email"
             required
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {t("password")}
           </label>
           <input
@@ -55,12 +55,12 @@ export function LoginForm() {
             type="password"
             autoComplete="current-password"
             required
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+          <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-lg px-3 py-2">
             {error}
           </p>
         )}
@@ -74,7 +74,7 @@ export function LoginForm() {
         </button>
 
         <div className="text-center">
-          <Link href="/reset-password" className="text-sm text-gray-500 hover:text-gray-700">
+          <Link href="/reset-password" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
             {t("forgotPassword")}
           </Link>
         </div>

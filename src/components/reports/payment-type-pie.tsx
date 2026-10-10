@@ -60,9 +60,21 @@ export function PaymentTypePie({ data, intlLocale = "pt-BR", currency = "BRL" }:
             new Intl.NumberFormat(intlLocale, { style: "currency", currency }).format(Number(v)),
             t("total"),
           ]}
-          contentStyle={{ fontSize: 12, borderRadius: 8 }}
+          contentStyle={{
+            fontSize: 12,
+            borderRadius: 8,
+            backgroundColor: "var(--chart-tooltip-bg, #ffffff)",
+            borderColor: "var(--chart-tooltip-border, #e5e7eb)",
+            color: "var(--chart-tooltip-text, #111827)",
+          }}
+          itemStyle={{
+            color: "var(--chart-tooltip-text, #111827)",
+          }}
         />
-        <Legend wrapperStyle={{ fontSize: 12 }} />
+        <Legend
+          wrapperStyle={{ fontSize: 12 }}
+          formatter={(value) => <span className="text-gray-700 dark:text-gray-300">{value}</span>}
+        />
       </PieChart>
     </ResponsiveContainer>
   );

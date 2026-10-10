@@ -80,10 +80,10 @@ export function DescriptionBarChart({
         data={chartData}
         margin={{ top: 4, right: 16, left: 8, bottom: 4 }}
       >
-        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
+        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--chart-grid, #e5e7eb)" />
         <XAxis
           type="number"
-          tick={{ fontSize: 11, fill: "#6b7280" }}
+          tick={{ fontSize: 11, fill: "var(--chart-axis, #6b7280)" }}
           axisLine={false}
           tickLine={false}
           tickFormatter={(v) =>
@@ -96,7 +96,7 @@ export function DescriptionBarChart({
         <YAxis
           type="category"
           dataKey="description"
-          tick={{ fontSize: 12, fill: "#374151" }}
+          tick={{ fontSize: 12, fill: "var(--chart-axis, #6b7280)" }}
           axisLine={false}
           tickLine={false}
           width={110}
@@ -109,13 +109,13 @@ export function DescriptionBarChart({
             if (!active || !payload?.length) return null;
             const item = payload[0].payload as (typeof chartData)[number];
             return (
-              <div className="bg-white border border-gray-200 shadow-md rounded-lg p-2.5 text-xs">
-                <p className="font-semibold text-gray-900 mb-1">{item.description}</p>
-                <p className="text-gray-600">
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md rounded-lg p-2.5 text-xs">
+                <p className="font-semibold text-gray-900 dark:text-white mb-1">{item.description}</p>
+                <p className="text-gray-600 dark:text-gray-300">
                   <span className="font-medium">{chartT("total")}:</span>{" "}
                   {formatCurrency(item.total, intlLocale, currency)}
                 </p>
-                <p className="text-gray-500">
+                <p className="text-gray-500 dark:text-gray-400">
                   {item.count} {t("countHeader").toLowerCase()} ({item.percentage.toFixed(1)}%)
                 </p>
               </div>

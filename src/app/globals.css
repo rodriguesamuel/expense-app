@@ -1,8 +1,27 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
   --background: #f9fafb;
   --foreground: #111827;
+  --chart-grid: #e5e7eb;
+  --chart-axis: #6b7280;
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-border: #e5e7eb;
+  --chart-tooltip-text: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #030712;
+    --foreground: #f9fafb;
+    --chart-grid: #1f2937;
+    --chart-axis: #9ca3af;
+    --chart-tooltip-bg: #111827;
+    --chart-tooltip-border: #374151;
+    --chart-tooltip-text: #f9fafb;
+  }
 }
 
 @theme inline {

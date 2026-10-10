@@ -16,17 +16,17 @@ export function SummaryCards({ total, count, dailyAverage }: Props) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t("total")}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(total, intlLocale, currency)}</p>
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t("total")}</p>
+        <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{formatCurrency(total, intlLocale, currency)}</p>
       </div>
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t("expenses")}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-1">{count}</p>
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t("expenses")}</p>
+        <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{count}</p>
       </div>
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t("dailyAverage")}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(dailyAverage, intlLocale, currency)}</p>
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t("dailyAverage")}</p>
+        <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{formatCurrency(dailyAverage, intlLocale, currency)}</p>
       </div>
     </div>
   );
