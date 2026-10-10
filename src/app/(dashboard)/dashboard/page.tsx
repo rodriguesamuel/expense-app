@@ -70,7 +70,7 @@ export default async function DashboardPage() {
   const expenseCount = monthData?.length ?? 0;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
         <p className="text-sm text-gray-500 mt-1">
@@ -79,18 +79,18 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
           <p className="text-sm text-gray-500">{t("thisMonth")}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-1">
+          <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 truncate">
             {formatCurrency(monthTotal, intlLocale, currency)}
           </p>
           <p className="text-xs text-gray-400 mt-1">
             {t("expenseCount", { count: expenseCount })}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-between">
+        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 flex flex-col justify-between gap-3">
           <p className="text-sm text-gray-500">{t("quickActions")}</p>
-          <div className="flex gap-2 mt-3">
+          <div className="flex gap-2">
             <Link
               href="/expenses/new"
               className="flex-1 text-center px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
@@ -108,40 +108,68 @@ export default async function DashboardPage() {
       </div>
 
       {monthlyChartData.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 min-w-0">
           <h2 className="text-base font-semibold text-gray-800 mb-4">
             {t("lastSixMonths")}
           </h2>
-          <MonthlyBarChart data={monthlyChartData} intlLocale={intlLocale} currency={currency} />
+          <div className="w-full min-w-0 h-[220px]">
+            <MonthlyBarChart data={monthlyChartData} intlLocale={intlLocale} currency={currency} />
+          </div>
         </div>
       )}
 
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-100">
           <h2 className="text-base font-semibold text-gray-800">{t("recentExpenses")}</h2>
-          <Link href="/expenses" className="text-sm text-blue-600 hover:underline">
+          <Link href="/expenses" className="text-sm font-medium text-blue-600 hover:underline">
             {t("seeAll")}
           </Link>
         </div>
         {recentExpenses?.length ? (
-          <table className="w-full text-sm">
-            <tbody className="divide-y divide-gray-100">
+          <>
+            {/* Mobile list view */}
+            <div className="divide-y divide-gray-100 md:hidden">
               {recentExpenses.map((e) => (
-                <tr key={e.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-3 text-gray-500 whitespace-nowrap">
-                    {formatDate(e.date, intlLocale)}
-                  </td>
-                  <td className="px-6 py-3 font-medium text-gray-900 max-w-xs truncate">
-                    {e.description}
-                  </td>
-                  <td className="px-6 py-3 text-gray-500">{e.payment_type_name}</td>
-                  <td className="px-6 py-3 text-right font-semibold text-gray-900">
-                    {formatCurrency(Number(e.amount), intlLocale, currency)}
-                  </td>
-                </tr>
+                <div key={e.id} className="p-4 flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-gray-900 truncate text-sm">{e.description}</p>
+                    <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-500">
+                      <span>{formatDate(e.date, intlLocale)}</span>
+                      <span>•</span>
+                      <span className="truncate">{e.payment_type_name}</span>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="font-semibold text-gray-900 text-sm">
+                      {formatCurrency(Number(e.amount), intlLocale, currency)}
+                    </span>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+
+            {/* Desktop table view */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <tbody className="divide-y divide-gray-100">
+                  {recentExpenses.map((e) => (
+                    <tr key={e.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-3 text-gray-500 whitespace-nowrap">
+                        {formatDate(e.date, intlLocale)}
+                      </td>
+                      <td className="px-6 py-3 font-medium text-gray-900 max-w-xs truncate">
+                        {e.description}
+                      </td>
+                      <td className="px-6 py-3 text-gray-500">{e.payment_type_name}</td>
+                      <td className="px-6 py-3 text-right font-semibold text-gray-900">
+                        {formatCurrency(Number(e.amount), intlLocale, currency)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
           <p className="text-center py-10 text-sm text-gray-400">
             {t("noExpenses")}{" "}

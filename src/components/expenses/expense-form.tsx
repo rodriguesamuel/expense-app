@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { createExpense, updateExpense } from "@/actions/expenses";
 import { todayISO, getLocaleConfig } from "@/lib/utils";
@@ -148,12 +149,12 @@ export function ExpenseForm({ paymentTypes, existing }: Props) {
         >
           {isPending ? t("saving") : existing ? t("updateExpense") : t("addExpense")}
         </button>
-        <a
+        <Link
           href="/expenses"
           className="px-5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg"
         >
           {t("cancel")}
-        </a>
+        </Link>
       </div>
     </form>
   );

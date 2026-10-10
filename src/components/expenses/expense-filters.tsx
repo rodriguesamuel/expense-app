@@ -26,31 +26,31 @@ export function ExpenseFilters({ paymentTypes }: Props) {
   }
 
   return (
-    <div className="flex flex-wrap gap-3 items-end">
-      <div>
+    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 items-end">
+      <div className="col-span-1 min-w-0">
         <label className="block text-xs font-medium text-gray-500 mb-1">{t("from")}</label>
         <input
           type="date"
           defaultValue={searchParams.get("date_from") ?? monthStartISO()}
           onChange={(e) => update("date_from", e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div>
+      <div className="col-span-1 min-w-0">
         <label className="block text-xs font-medium text-gray-500 mb-1">{t("to")}</label>
         <input
           type="date"
           defaultValue={searchParams.get("date_to") ?? monthEndISO()}
           onChange={(e) => update("date_to", e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div>
+      <div className="col-span-2 sm:col-span-1 sm:w-48 min-w-0">
         <label className="block text-xs font-medium text-gray-500 mb-1">{t("paymentType")}</label>
         <select
           defaultValue={searchParams.get("payment_type_id") ?? ""}
           onChange={(e) => update("payment_type_id", e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
         >
           <option value="">{t("allTypes")}</option>
           {paymentTypes.map((pt) => (

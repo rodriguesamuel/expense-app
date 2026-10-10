@@ -34,26 +34,28 @@ export function ReportsClient() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end gap-4">
-        <div>
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-end gap-3 sm:gap-4">
+        <div className="col-span-1 min-w-0">
           <label className="block text-xs font-medium text-gray-500 mb-1">{t("from")}</label>
           <input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div>
+        <div className="col-span-1 min-w-0">
           <label className="block text-xs font-medium text-gray-500 mb-1">{t("to")}</label>
           <input
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <CsvExportBtn dateFrom={dateFrom} dateTo={dateTo} />
+        <div className="col-span-2 sm:col-span-1">
+          <CsvExportBtn dateFrom={dateFrom} dateTo={dateTo} />
+        </div>
       </div>
 
       {error && (
@@ -110,35 +112,37 @@ export function ReportsClient() {
 
           {summary.byPaymentType.length > 0 && (
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100">
+              <div className="px-4 sm:px-6 py-4 border-b border-gray-100">
                 <h2 className="text-base font-semibold text-gray-800">{t("detailByType")}</h2>
               </div>
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="text-left px-6 py-3 font-medium text-gray-500">{t("typeHeader")}</th>
-                    <th className="text-right px-6 py-3 font-medium text-gray-500">{t("countHeader")}</th>
-                    <th className="text-right px-6 py-3 font-medium text-gray-500">{t("totalHeader")}</th>
-                    <th className="text-right px-6 py-3 font-medium text-gray-500">{t("percentHeader")}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {summary.byPaymentType.map((row) => (
-                    <tr key={row.paymentTypeId}>
-                      <td className="px-6 py-3 font-medium text-gray-900">
-                        {row.paymentTypeName}
-                      </td>
-                      <td className="px-6 py-3 text-right text-gray-600">{row.count}</td>
-                      <td className="px-6 py-3 text-right font-semibold text-gray-900">
-                        {formatCurrency(row.total, intlLocale, currency)}
-                      </td>
-                      <td className="px-6 py-3 text-right text-gray-500">
-                        {row.percentage.toFixed(1)}%
-                      </td>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[340px]">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="text-left px-4 sm:px-6 py-3 font-medium text-gray-500">{t("typeHeader")}</th>
+                      <th className="text-right px-4 sm:px-6 py-3 font-medium text-gray-500">{t("countHeader")}</th>
+                      <th className="text-right px-4 sm:px-6 py-3 font-medium text-gray-500">{t("totalHeader")}</th>
+                      <th className="text-right px-4 sm:px-6 py-3 font-medium text-gray-500">{t("percentHeader")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {summary.byPaymentType.map((row) => (
+                      <tr key={row.paymentTypeId}>
+                        <td className="px-4 sm:px-6 py-3 font-medium text-gray-900">
+                          {row.paymentTypeName}
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 text-right text-gray-600">{row.count}</td>
+                        <td className="px-4 sm:px-6 py-3 text-right font-semibold text-gray-900">
+                          {formatCurrency(row.total, intlLocale, currency)}
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 text-right text-gray-500">
+                          {row.percentage.toFixed(1)}%
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </>
