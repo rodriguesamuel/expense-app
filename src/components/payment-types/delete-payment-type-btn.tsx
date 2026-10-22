@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { deletePaymentType } from "@/actions/payment-types";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Props {
   id: string;
@@ -43,13 +44,16 @@ export function DeletePaymentTypeBtn({ id, name }: Props) {
         <button
           onClick={handleDelete}
           disabled={isPending}
-          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium"
+          aria-busy={isPending}
+          className="inline-flex items-center gap-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 disabled:opacity-60 font-medium"
         >
-          {isPending ? "…" : t("yes")}
+          {isPending && <Spinner className="h-3.5 w-3.5" />}
+          {t("yes")}
         </button>
         <button
           onClick={() => setConfirm(false)}
-          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+          disabled={isPending}
+          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-60"
         >
           {t("no")}
         </button>

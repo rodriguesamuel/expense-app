@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { createExpense, updateExpense } from "@/actions/expenses";
 import { todayISO, getLocaleConfig } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
+import { LinkPendingIndicator } from "@/components/ui/link-pending-indicator";
 import type { ExpenseWithPaymentType, PaymentType } from "@/types";
 
 interface Props {
@@ -40,7 +42,7 @@ export function ExpenseForm({ paymentTypes, existing }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 max-w-lg">
+    <form method="post" onSubmit={handleSubmit} className="space-y-5 max-w-lg">
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           {t("descriptionLabel")} <span className="text-red-500">*</span>
@@ -145,14 +147,18 @@ export function ExpenseForm({ paymentTypes, existing }: Props) {
         <button
           type="submit"
           disabled={isPending}
-          className="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
+          aria-busy={isPending}
+          className="inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
         >
+          {isPending && <Spinner />}
           {isPending ? t("saving") : existing ? t("updateExpense") : t("addExpense")}
         </button>
         <Link
           href="/expenses"
-          className="px-5 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          aria-disabled={isPending}
+          className={`inline-flex items-center gap-2 px-5 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors ${isPending ? "pointer-events-none opacity-50" : ""}`}
         >
+          <LinkPendingIndicator />
           {t("cancel")}
         </Link>
       </div>

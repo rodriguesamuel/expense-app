@@ -129,7 +129,9 @@
     "totalHeader": "Total",
     "percentHeader": "%",
     "noExpenses": "Nenhuma despesa neste período.",
-    "exportCsv": "⬇ Exportar CSV"
+    "exportCsv": "⬇ Exportar CSV",
+    "exporting": "Exportando…",
+    "exportFailed": "Falha ao exportar CSV."
   },
   "summaryCards": {
     "total": "Total",
@@ -154,6 +156,7 @@
     "deleteBlocked": "{count, plural, one {Não é possível excluir: # despesa usa esta forma de pagamento.} other {Não é possível excluir: # despesas usam esta forma de pagamento.}} Reatribua ou exclua as despesas primeiro."
   },
   "common": {
+    "loading": "Carregando…",
     "notFound": "Despesa não encontrada",
     "backToExpenses": "Voltar para despesas",
     "somethingWentWrong": "Algo deu errado",

@@ -129,7 +129,9 @@
     "totalHeader": "Total",
     "percentHeader": "%",
     "noExpenses": "No expenses in this period.",
-    "exportCsv": "⬇ Export CSV"
+    "exportCsv": "⬇ Export CSV",
+    "exporting": "Exporting…",
+    "exportFailed": "Failed to export CSV."
   },
   "summaryCards": {
     "total": "Total",
@@ -154,6 +156,7 @@
     "deleteBlocked": "{count, plural, one {Cannot delete: # expense uses this payment type.} other {Cannot delete: # expenses use this payment type.}} Reassign or delete them first."
   },
   "common": {
+    "loading": "Loading…",
     "notFound": "Expense not found",
     "backToExpenses": "Back to expenses",
     "somethingWentWrong": "Something went wrong",

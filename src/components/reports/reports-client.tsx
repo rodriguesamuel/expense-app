@@ -9,6 +9,7 @@ import { MonthlyBarChart } from "./monthly-bar-chart";
 import { DescriptionBarChart } from "./description-bar-chart";
 import { DescriptionTable } from "./description-table";
 import { CsvExportBtn } from "./csv-export-btn";
+import { LoadingState } from "@/components/ui/loading-state";
 import type { ReportSummary } from "@/types";
 
 export function ReportsClient() {
@@ -91,9 +92,7 @@ export function ReportsClient() {
         </p>
       )}
 
-      {loading && (
-        <div className="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">{t("loading")}</div>
-      )}
+      {loading && <LoadingState className="py-8" />}
 
       {!loading && summary && (
         <>

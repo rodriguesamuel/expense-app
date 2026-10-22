@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+export const TIME_ZONE = "America/Sao_Paulo";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

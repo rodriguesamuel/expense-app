@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { createPaymentType, updatePaymentType } from "@/actions/payment-types";
+import { Spinner } from "@/components/ui/spinner";
 import type { PaymentType } from "@/types";
 
 interface Props {
@@ -32,7 +33,7 @@ export function PaymentTypeForm({ existing, onDone }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form method="post" onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           {t("nameLabel")}
@@ -59,15 +60,18 @@ export function PaymentTypeForm({ existing, onDone }: Props) {
         <button
           type="button"
           onClick={onDone}
-          className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          disabled={isPending}
+          className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
         >
           {t("cancel")}
         </button>
         <button
           type="submit"
           disabled={isPending}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
+          aria-busy={isPending}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
         >
+          {isPending && <Spinner />}
           {isPending ? t("saving") : existing ? t("update") : t("create")}
         </button>
       </div>
