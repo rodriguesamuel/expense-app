@@ -69,7 +69,7 @@ export function PaymentTypeList({ paymentTypes }: Props) {
                     )}
                   </td>
                   <td className="px-4 sm:px-6 py-4">
-                    {!pt.is_system && editingId !== pt.id && (
+                    {editingId !== pt.id && (
                       <div className="flex gap-2 justify-end">
                         <button
                           onClick={() => setEditingId(pt.id)}
@@ -77,7 +77,7 @@ export function PaymentTypeList({ paymentTypes }: Props) {
                         >
                           {t("edit")}
                         </button>
-                        <DeletePaymentTypeBtn id={pt.id} name={pt.name} />
+                        {!pt.is_system && <DeletePaymentTypeBtn id={pt.id} name={pt.name} />}
                       </div>
                     )}
                   </td>

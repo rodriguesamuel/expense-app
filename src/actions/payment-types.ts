@@ -65,8 +65,7 @@ export async function updatePaymentType(
     .from("payment_types")
     .update({ name: parsed.data.name })
     .eq("id", id)
-    .eq("user_id", user.id)
-    .eq("is_system", false);
+    .eq("user_id", user.id);
 
   if (error) {
     if (error.code === "23505") {
