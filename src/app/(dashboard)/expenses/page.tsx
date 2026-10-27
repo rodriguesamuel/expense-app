@@ -74,9 +74,14 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
                 </span>
               </div>
               <div className="flex items-center justify-between pt-1">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 max-w-[150px] truncate">
-                  {e.payment_type_name}
-                </span>
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 max-w-[150px] truncate">
+                    {e.category_name ?? t("uncategorized")}
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 max-w-[150px] truncate">
+                    {e.payment_type_name}
+                  </span>
+                </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <Link
                     href={`/expenses/${e.id}`}
@@ -98,6 +103,7 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
               <tr>
                 <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("dateHeader")}</th>
                 <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("descriptionHeader")}</th>
+                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("categoryHeader")}</th>
                 <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("typeHeader")}</th>
                 <th className="text-right px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("amountHeader")}</th>
                 <th className="px-6 py-3" />
@@ -111,6 +117,9 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
                   </td>
                   <td className="px-6 py-3 font-medium text-gray-900 dark:text-white max-w-xs truncate">
                     {e.description}
+                  </td>
+                  <td className="px-6 py-3 text-gray-600 dark:text-gray-400">
+                    {e.category_name ?? t("uncategorized")}
                   </td>
                   <td className="px-6 py-3 text-gray-600 dark:text-gray-400">{e.payment_type_name}</td>
                   <td className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-white">

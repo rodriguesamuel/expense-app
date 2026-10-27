@@ -16,6 +16,8 @@ export function MobileHeader() {
     { href: "/dashboard", label: t("dashboard"), icon: "📊" },
     { href: "/expenses", label: t("expenses"), icon: "💸" },
     { href: "/payment-types", label: t("paymentTypes"), icon: "💳" },
+    { href: "/categories", label: t("categories"), icon: "🏷️" },
+    { href: "/budgets", label: t("budgets"), icon: "🎯" },
     { href: "/reports", label: t("reports"), icon: "📈" },
   ];
 

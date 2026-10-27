@@ -5,14 +5,15 @@ import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { createExpense, updateExpense } from "@/actions/expenses";
 import { todayISO, getLocaleConfig } from "@/lib/utils";
-import type { ExpenseWithPaymentType, PaymentType } from "@/types";
+import type { Category, ExpenseWithPaymentType, PaymentType } from "@/types";
 
 interface Props {
   paymentTypes: PaymentType[];
+  categories: Category[];
   existing?: ExpenseWithPaymentType;
 }
 
-export function ExpenseForm({ paymentTypes, existing }: Props) {
+export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
   const t = useTranslations("expenseForm");
   const locale = useLocale();
   const { currency } = getLocaleConfig(locale);
@@ -58,6 +59,14 @@ export function ExpenseForm({ paymentTypes, existing }: Props) {
         {field("description") && (
           <p className="text-xs text-red-600 dark:text-red-400 mt-1">{field("description")}</p>
         )}
+      </div>
+
+      <div>
+        <label htmlFor="category_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("categoryLabel")}</label>
+        <select id="category_id" name="category_id" defaultValue={existing?.category_id ?? ""} className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">{t("categoryPlaceholder")}</option>
+          {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+        </select>
       </div>
 
       <div>

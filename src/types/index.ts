@@ -1,9 +1,19 @@
-export type { Expense, PaymentType, ExpenseWithPaymentType } from "./supabase";
+export type { Expense, PaymentType, ExpenseWithPaymentType, Category, Budget } from "./supabase";
 
 export interface ExpenseFilters {
   dateFrom?: string;
   dateTo?: string;
   paymentTypeId?: string;
+  categoryId?: string;
+}
+
+export interface CategoryBudgetSummary {
+  categoryId: string;
+  categoryName: string;
+  spent: number;
+  budget: number;
+  difference: number;
+  percentage: number;
 }
 
 export interface DescriptionSummaryItem {

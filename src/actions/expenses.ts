@@ -19,6 +19,7 @@ export async function createExpense(formData: FormData): Promise<ActionResult> {
     description: formData.get("description") as string,
     amount: formData.get("amount") as string,
     payment_type_id: formData.get("payment_type_id") as string,
+    category_id: (formData.get("category_id") as string) || undefined,
     date: formData.get("date") as string,
     notes: (formData.get("notes") as string) || undefined,
   };
@@ -33,6 +34,7 @@ export async function createExpense(formData: FormData): Promise<ActionResult> {
     description: parsed.data.description,
     amount: parseFloat(parsed.data.amount),
     payment_type_id: parsed.data.payment_type_id,
+    category_id: parsed.data.category_id || null,
     date: parsed.data.date,
     notes: parsed.data.notes || null,
   });
@@ -61,6 +63,7 @@ export async function updateExpense(
     description: formData.get("description") as string,
     amount: formData.get("amount") as string,
     payment_type_id: formData.get("payment_type_id") as string,
+    category_id: (formData.get("category_id") as string) || undefined,
     date: formData.get("date") as string,
     notes: (formData.get("notes") as string) || undefined,
   };
@@ -76,6 +79,7 @@ export async function updateExpense(
       description: parsed.data.description,
       amount: parseFloat(parsed.data.amount),
       payment_type_id: parsed.data.payment_type_id,
+      category_id: parsed.data.category_id || null,
       date: parsed.data.date,
       notes: parsed.data.notes || null,
     })

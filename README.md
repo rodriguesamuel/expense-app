@@ -24,11 +24,16 @@ Personal expense tracking app built with Next.js 16 + Supabase.
 
 1. Create a project at [supabase.com](https://supabase.com)
 2. Run `supabase/migrations/001_initial_schema.sql` in the SQL Editor
-3. Enable `pg_cron` extension and run the keepalive query:
+3. Run `supabase/migrations/002_categories_budgets.sql` in the SQL Editor. This creates the categories and budgets tables, adds the category relationship to expenses, and updates the expense report view.
+4. If the application still reports that `public.categories` is missing, use **Settings → API → Reload schema cache** in Supabase, or run:
+   ```sql
+   NOTIFY pgrst, 'reload schema';
+   ```
+5. Enable `pg_cron` extension and run the keepalive query:
    ```sql
    SELECT cron.schedule('keepalive', '0 12 */4 * *', 'SELECT 1');
    ```
-4. Copy Project URL and anon key from Project Settings → API
+6. Copy Project URL and anon key from Project Settings → API
 
 ### 2. Local development
 

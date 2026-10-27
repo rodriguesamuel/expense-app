@@ -16,6 +16,7 @@ export interface Database {
           description: string;
           amount: number;
           payment_type_id: string;
+          category_id: string | null;
           date: string;
           notes: string | null;
           created_at: string;
@@ -27,6 +28,7 @@ export interface Database {
           description: string;
           amount: number;
           payment_type_id: string;
+          category_id?: string | null | undefined;
           date?: string | undefined;
           notes?: string | null | undefined;
           created_at?: string | undefined;
@@ -38,6 +40,7 @@ export interface Database {
           description?: string | undefined;
           amount?: number | undefined;
           payment_type_id?: string | undefined;
+          category_id?: string | null | undefined;
           date?: string | undefined;
           notes?: string | null | undefined;
           updated_at?: string | undefined;
@@ -93,6 +96,58 @@ export interface Database {
           }
         ];
       };
+      categories: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      budgets: {
+        Row: {
+          id: string;
+          user_id: string;
+          category_id: string;
+          month: string;
+          amount: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          category_id: string;
+          month: string;
+          amount: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          category_id?: string;
+          month?: string;
+          amount?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       expenses_with_payment_type: {
@@ -106,7 +161,9 @@ export interface Database {
           created_at: string;
           updated_at: string;
           payment_type_id: string;
+          category_id: string | null;
           payment_type_name: string;
+          category_name: string | null;
         };
         Relationships: [];
       };
@@ -122,5 +179,7 @@ export type Tables<T extends keyof Database["public"]["Tables"]> =
 
 export type Expense = Tables<"expenses">;
 export type PaymentType = Tables<"payment_types">;
+export type Category = Tables<"categories">;
+export type Budget = Tables<"budgets">;
 export type ExpenseWithPaymentType =
   Database["public"]["Views"]["expenses_with_payment_type"]["Row"];

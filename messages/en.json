@@ -3,6 +3,38 @@
     "locale": "en-US",
     "currency": "USD"
   },
+  "categories": {
+    "title": "Expense categories",
+    "addCategory": "+ Add category",
+    "newCategory": "New category",
+    "nameHeader": "Name",
+    "edit": "Edit",
+    "empty": "No categories registered."
+  },
+  "categoryForm": {
+    "nameLabel": "Name",
+    "namePlaceholder": "e.g. Food, Transport…",
+    "cancel": "Cancel",
+    "saving": "Saving…",
+    "update": "Update",
+    "create": "Create"
+  },
+  "deleteCategory": {
+    "delete": "Delete",
+    "confirm": "Delete \"{name}\"?"
+  },
+  "budgets": {
+    "title": "Budget by category",
+    "description": "Set a monthly limit for each category. Saving again updates the amount.",
+    "category": "Category",
+    "selectCategory": "Select a category…",
+    "month": "Month",
+    "amount": "Budget ({currency})",
+    "save": "Save budget",
+    "amountHeader": "Defined amount",
+    "unknownCategory": "Category not found",
+    "delete": "Delete"
+  },
   "auth": {
     "signIn": "Sign in",
     "createAccount": "Create account",
@@ -28,6 +60,8 @@
     "dashboard": "Dashboard",
     "expenses": "Expenses",
     "paymentTypes": "Payment Types",
+    "categories": "Categories",
+    "budgets": "Budgets",
     "reports": "Reports",
     "signOut": "Sign out",
     "toggleMenu": "Toggle menu"
@@ -54,19 +88,23 @@
     "expenseCount": "{count, plural, one {# expense} other {# expenses}} · Page {page} of {totalPages}",
     "dateHeader": "Date",
     "descriptionHeader": "Description",
+    "categoryHeader": "Category",
     "typeHeader": "Type",
     "amountHeader": "Amount",
+    "uncategorized": "Uncategorized",
     "edit": "Edit"
   },
   "expenseForm": {
     "descriptionLabel": "Description",
     "amountLabel": "Amount ({currency})",
     "paymentTypeLabel": "Payment type",
+    "categoryLabel": "Category",
     "dateLabel": "Date",
     "notesLabel": "Notes",
     "descriptionPlaceholder": "e.g. Grocery shopping",
     "amountPlaceholder": "0.00",
     "paymentTypePlaceholder": "Select a payment type…",
+    "categoryPlaceholder": "Select a category (optional)…",
     "notesPlaceholder": "Optional notes…",
     "saving": "Saving…",
     "updateExpense": "Update expense",
@@ -129,7 +167,13 @@
     "totalHeader": "Total",
     "percentHeader": "%",
     "noExpenses": "No expenses in this period.",
-    "exportCsv": "⬇ Export CSV"
+    "exportCsv": "⬇ Export CSV",
+    "byCategoryBudget": "Spending by category vs budget",
+    "categoryHeader": "Category",
+    "spentHeader": "Total spent",
+    "budgetHeader": "Defined budget",
+    "differenceHeader": "Remaining",
+    "noCategoryData": "No categories registered."
   },
   "summaryCards": {
     "total": "Total",
@@ -144,13 +188,16 @@
     "amountRequired": "Amount is required",
     "amountPositive": "Amount must be a positive number",
     "paymentTypeRequired": "Please select a payment type",
+    "categoryRequired": "Please select a valid category",
     "dateRequired": "Date is required",
+    "monthRequired": "Please enter a valid month",
     "nameRequired": "Name is required"
   },
   "actions": {
     "accountCreated": "Account created! Please check your email to confirm your registration.",
     "resetLinkSent": "Password reset link sent — check your email.",
     "duplicatePaymentType": "A payment type with this name already exists.",
+    "duplicateCategory": "A category with this name already exists.",
     "deleteBlocked": "{count, plural, one {Cannot delete: # expense uses this payment type.} other {Cannot delete: # expenses use this payment type.}} Reassign or delete them first."
   },
   "common": {

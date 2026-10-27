@@ -14,16 +14,19 @@ export default async function NewExpensePage() {
 
   const { t } = await getI18n("common");
 
-  const { data: paymentTypes } = await supabase
+  const [{ data: paymentTypes }, { data: categories }] = await Promise.all([
+    supabase
     .from("payment_types")
     .select("*")
     .eq("user_id", user.id)
-    .order("name");
+    .order("name"),
+    supabase.from("categories").select("*").eq("user_id", user.id).order("name"),
+  ]);
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t("newExpense")}</h1>
-      <ExpenseForm paymentTypes={paymentTypes ?? []} />
+      <ExpenseForm paymentTypes={paymentTypes ?? []} categories={categories ?? []} />
     </div>
   );
 }

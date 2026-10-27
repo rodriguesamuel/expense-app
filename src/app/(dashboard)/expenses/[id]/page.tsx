@@ -19,7 +19,7 @@ export default async function EditExpensePage({ params }: PageProps) {
   const { t } = await getI18n("common");
   const { id } = await params;
 
-  const [{ data: expense }, { data: paymentTypes }] = await Promise.all([
+  const [{ data: expense }, { data: paymentTypes }, { data: categories }] = await Promise.all([
     supabase
       .from("expenses_with_payment_type")
       .select("*")
@@ -31,6 +31,7 @@ export default async function EditExpensePage({ params }: PageProps) {
       .select("*")
       .eq("user_id", user.id)
       .order("name"),
+    supabase.from("categories").select("*").eq("user_id", user.id).order("name"),
   ]);
 
   if (!expense) notFound();
@@ -38,7 +39,7 @@ export default async function EditExpensePage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t("editExpense")}</h1>
-      <ExpenseForm paymentTypes={paymentTypes ?? []} existing={expense} />
+      <ExpenseForm paymentTypes={paymentTypes ?? []} categories={categories ?? []} existing={expense} />
     </div>
   );
 }

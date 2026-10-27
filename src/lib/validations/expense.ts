@@ -10,6 +10,7 @@ export function createExpenseSchema(t: (key: string) => string) {
         message: t("amountPositive"),
       }),
     payment_type_id: z.string().uuid(t("paymentTypeRequired")),
+    category_id: z.string().uuid(t("categoryRequired")).optional().or(z.literal("")),
     date: z.string().min(1, t("dateRequired")),
     notes: z.string().max(1000).optional(),
   });
