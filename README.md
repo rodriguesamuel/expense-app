@@ -6,7 +6,7 @@ Personal expense tracking app built with Next.js 16 + Supabase.
 
 - Email/password auth with password reset
 - Expense CRUD with date, amount, description, payment type
-- Customizable payment types (5 defaults + add your own)
+- Customizable payment types (5 renamable defaults + add your own)
 - Reports with charts and CSV export
 - Responsive design (mobile + desktop)
 

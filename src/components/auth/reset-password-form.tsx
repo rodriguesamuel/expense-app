@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { requestPasswordReset, confirmPasswordReset } from "@/actions/auth";
+import { Spinner } from "@/components/ui/spinner";
 
 export function ResetPasswordForm() {
   const t = useTranslations("auth");
@@ -47,7 +48,7 @@ export function ResetPasswordForm() {
           {success}
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit} className="space-y-4">
           {isConfirm ? (
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -86,8 +87,10 @@ export function ResetPasswordForm() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 text-sm transition-colors"
+            aria-busy={isPending}
+            className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 text-sm transition-colors"
           >
+            {isPending && <Spinner />}
             {isPending
               ? t("sending")
               : isConfirm

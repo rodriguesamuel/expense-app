@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { createExpense, updateExpense } from "@/actions/expenses";
 import { todayISO, getLocaleConfig } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
+import { LinkPendingIndicator } from "@/components/ui/link-pending-indicator";
 import type { Category, ExpenseWithPaymentType, PaymentType } from "@/types";
 
 interface Props {
@@ -41,9 +43,12 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 max-w-lg">
+    <form method="post" onSubmit={handleSubmit} className="space-y-5 max-w-lg">
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+        >
           {t("descriptionLabel")} <span className="text-red-500">*</span>
         </label>
         <input
@@ -57,21 +62,41 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
           placeholder={t("descriptionPlaceholder")}
         />
         {field("description") && (
-          <p className="text-xs text-red-600 dark:text-red-400 mt-1">{field("description")}</p>
+          <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+            {field("description")}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="category_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("categoryLabel")}</label>
-        <select id="category_id" name="category_id" defaultValue={existing?.category_id ?? ""} className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <label
+          htmlFor="category_id"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+        >
+          {t("categoryLabel")}
+        </label>
+        <select
+          id="category_id"
+          name="category_id"
+          defaultValue={existing?.category_id ?? ""}
+          className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
           <option value="">{t("categoryPlaceholder")}</option>
-          {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
 
       <div>
-        <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          {t("amountLabel", { currency })} <span className="text-red-500">*</span>
+        <label
+          htmlFor="amount"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+        >
+          {t("amountLabel", { currency })}{" "}
+          <span className="text-red-500">*</span>
         </label>
         <input
           id="amount"
@@ -85,12 +110,17 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
           placeholder={t("amountPlaceholder")}
         />
         {field("amount") && (
-          <p className="text-xs text-red-600 dark:text-red-400 mt-1">{field("amount")}</p>
+          <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+            {field("amount")}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="payment_type_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label
+          htmlFor="payment_type_id"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+        >
           {t("paymentTypeLabel")} <span className="text-red-500">*</span>
         </label>
         <select
@@ -100,20 +130,34 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
           required
           className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">{t("paymentTypePlaceholder")}</option>
+          <option
+            value=""
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+          >
+            {t("paymentTypePlaceholder")}
+          </option>
           {paymentTypes.map((pt) => (
-            <option key={pt.id} value={pt.id} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+            <option
+              key={pt.id}
+              value={pt.id}
+              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            >
               {pt.name}
             </option>
           ))}
         </select>
         {field("payment_type_id") && (
-          <p className="text-xs text-red-600 dark:text-red-400 mt-1">{field("payment_type_id")}</p>
+          <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+            {field("payment_type_id")}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label
+          htmlFor="date"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+        >
           {t("dateLabel")} <span className="text-red-500">*</span>
         </label>
         <input
@@ -125,12 +169,17 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
           className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {field("date") && (
-          <p className="text-xs text-red-600 dark:text-red-400 mt-1">{field("date")}</p>
+          <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+            {field("date")}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label
+          htmlFor="notes"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+        >
           {t("notesLabel")}
         </label>
         <textarea
@@ -154,14 +203,22 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
         <button
           type="submit"
           disabled={isPending}
-          className="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
+          aria-busy={isPending}
+          className="inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors"
         >
-          {isPending ? t("saving") : existing ? t("updateExpense") : t("addExpense")}
+          {isPending && <Spinner />}
+          {isPending
+            ? t("saving")
+            : existing
+              ? t("updateExpense")
+              : t("addExpense")}
         </button>
         <Link
           href="/expenses"
-          className="px-5 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          aria-disabled={isPending}
+          className={`inline-flex items-center gap-2 px-5 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors ${isPending ? "pointer-events-none opacity-50" : ""}`}
         >
+          <LinkPendingIndicator />
           {t("cancel")}
         </Link>
       </div>

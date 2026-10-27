@@ -1,8 +1,10 @@
 "use client";
 
+import { useTransition } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { monthStartISO, monthEndISO } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 import type { PaymentType } from "@/types";
 
 interface Props {
@@ -14,6 +16,7 @@ export function ExpenseFilters({ paymentTypes }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   function update(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -22,11 +25,13 @@ export function ExpenseFilters({ paymentTypes }: Props) {
     } else {
       params.delete(key);
     }
-    router.push(`${pathname}?${params.toString()}`);
+    startTransition(() => {
+      router.push(`${pathname}?${params.toString()}`);
+    });
   }
 
   return (
-    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 items-end">
+    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 items-end" aria-busy={isPending}>
       <div className="col-span-1 min-w-0">
         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t("from")}</label>
         <input
@@ -60,6 +65,11 @@ export function ExpenseFilters({ paymentTypes }: Props) {
           ))}
         </select>
       </div>
+      {isPending && (
+        <div className="col-span-2 sm:col-span-1 flex items-center h-[34px] text-blue-600 dark:text-blue-400">
+          <Spinner className="h-5 w-5" />
+        </div>
+      )}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getI18n } from "@/lib/i18n.server";
 import { formatCurrency, formatDate, monthStartISO, monthEndISO, getLocaleConfig } from "@/lib/utils";
 import { MonthlyBarChart } from "@/components/reports/monthly-bar-chart";
+import { LinkPendingIndicator } from "@/components/ui/link-pending-indicator";
 
 export const metadata = { title: "Dashboard — Expense Tracker" };
 
@@ -93,14 +94,16 @@ export default async function DashboardPage() {
           <div className="flex gap-2">
             <Link
               href="/expenses/new"
-              className="flex-1 text-center px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
             >
+              <LinkPendingIndicator />
               {t("newExpense")}
             </Link>
             <Link
               href="/reports"
-              className="flex-1 text-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
             >
+              <LinkPendingIndicator />
               {t("viewReports")}
             </Link>
           </div>
@@ -121,7 +124,8 @@ export default async function DashboardPage() {
       <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
         <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-100 dark:border-gray-800">
           <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200">{t("recentExpenses")}</h2>
-          <Link href="/expenses" className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+          <Link href="/expenses" className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+            <LinkPendingIndicator className="h-3.5 w-3.5" />
             {t("seeAll")}
           </Link>
         </div>
@@ -173,7 +177,8 @@ export default async function DashboardPage() {
         ) : (
           <p className="text-center py-10 text-sm text-gray-400 dark:text-gray-500">
             {t("noExpenses")}{" "}
-            <Link href="/expenses/new" className="text-blue-600 dark:text-blue-400 hover:underline">
+            <Link href="/expenses/new" className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline">
+              <LinkPendingIndicator className="h-3.5 w-3.5" />
               {t("addFirst")}
             </Link>
           </p>

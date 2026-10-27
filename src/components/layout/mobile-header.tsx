@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { logout } from "@/actions/auth";
+import { LogoutButton } from "./logout-button";
 
 export function MobileHeader() {
   const t = useTranslations("nav");
@@ -70,15 +70,7 @@ export function MobileHeader() {
             </div>
 
             <div className="px-3 py-4 border-t border-gray-100 dark:border-gray-800">
-              <form action={logout}>
-                <button
-                  type="submit"
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition-colors"
-                >
-                  <span>🚪</span>
-                  {t("signOut")}
-                </button>
-              </form>
+              <LogoutButton />
             </div>
           </nav>
         </div>

@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { deleteExpense } from "@/actions/expenses";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Props {
   id: string;
@@ -25,13 +26,16 @@ export function DeleteExpenseBtn({ id }: Props) {
         <button
           onClick={handleDelete}
           disabled={isPending}
-          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium"
+          aria-busy={isPending}
+          className="inline-flex items-center gap-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 disabled:opacity-60 font-medium"
         >
-          {isPending ? "…" : t("delete")}
+          {isPending && <Spinner className="h-3.5 w-3.5" />}
+          {t("delete")}
         </button>
         <button
           onClick={() => setConfirm(false)}
-          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+          disabled={isPending}
+          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-60"
         >
           {t("cancel")}
         </button>

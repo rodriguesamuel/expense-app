@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { getI18n } from "@/lib/i18n.server";
 import { ExpenseFilters } from "@/components/expenses/expense-filters";
 import { DeleteExpenseBtn } from "@/components/expenses/delete-expense-btn";
+import { LoadingState } from "@/components/ui/loading-state";
+import { LinkPendingIndicator } from "@/components/ui/link-pending-indicator";
 import { formatCurrency, formatDate, monthStartISO, monthEndISO, getLocaleConfig } from "@/lib/utils";
 
 export const metadata = { title: "Expenses — Expense Tracker" };
@@ -85,8 +87,9 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
                 <div className="flex items-center gap-3 shrink-0">
                   <Link
                     href={`/expenses/${e.id}`}
-                    className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                   >
+                    <LinkPendingIndicator className="h-3.5 w-3.5" />
                     {t("edit")}
                   </Link>
                   <DeleteExpenseBtn id={e.id} />
@@ -129,8 +132,9 @@ async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, int
                     <div className="flex gap-3 justify-end">
                       <Link
                         href={`/expenses/${e.id}`}
-                        className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                        className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                       >
+                        <LinkPendingIndicator className="h-3.5 w-3.5" />
                         {t("edit")}
                       </Link>
                       <DeleteExpenseBtn id={e.id} />
@@ -172,8 +176,9 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t("title")}</h1>
         <Link
           href="/expenses/new"
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shrink-0 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shrink-0 transition-colors"
         >
+          <LinkPendingIndicator />
           {t("addExpense")}
         </Link>
       </div>
@@ -182,7 +187,7 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
         <ExpenseFilters paymentTypes={paymentTypes ?? []} />
       </Suspense>
 
-      <Suspense fallback={<div className="text-gray-400 dark:text-gray-500 py-8 text-center">{t("loading")}</div>}>
+      <Suspense fallback={<LoadingState className="py-8" />}>
         <ExpenseTable
           userId={user.id}
           dateFrom={dateFrom}
