@@ -7,16 +7,20 @@ import { Spinner } from "@/components/ui/spinner";
 
 interface Props {
   id: string;
+  onDeleted?: (id: string) => void;
 }
 
-export function DeleteExpenseBtn({ id }: Props) {
+export function DeleteExpenseBtn({ id, onDeleted }: Props) {
   const t = useTranslations("deleteExpense");
   const [confirm, setConfirm] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function handleDelete() {
     startTransition(async () => {
-      await deleteExpense(id);
+      const res = await deleteExpense(id);
+      if (!res?.error) {
+        onDeleted?.(id);
+      }
     });
   }
 

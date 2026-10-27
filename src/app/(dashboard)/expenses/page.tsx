@@ -5,148 +5,61 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { getI18n } from "@/lib/i18n.server";
+import { getExpenses } from "@/actions/expenses";
 import { ExpenseFilters } from "@/components/expenses/expense-filters";
-import { DeleteExpenseBtn } from "@/components/expenses/delete-expense-btn";
+import { ExpenseInfiniteList } from "@/components/expenses/expense-infinite-list";
 import { LoadingState } from "@/components/ui/loading-state";
 import { LinkPendingIndicator } from "@/components/ui/link-pending-indicator";
-import { formatCurrency, formatDate, monthStartISO, monthEndISO, getLocaleConfig } from "@/lib/utils";
+import { monthStartISO, monthEndISO, getLocaleConfig } from "@/lib/utils";
 
 export const metadata = { title: "Expenses — Expense Tracker" };
 
 interface PageProps {
-  searchParams: Promise<{ date_from?: string; date_to?: string; payment_type_id?: string; page?: string }>;
+  searchParams: Promise<{
+    date_from?: string;
+    date_to?: string;
+    payment_type_id?: string;
+    category_id?: string;
+    page?: string;
+  }>;
 }
 
-async function ExpenseTable({ userId, dateFrom, dateTo, paymentTypeId, page, intlLocale, currency }: {
-  userId: string;
+async function ExpenseTable({
+  dateFrom,
+  dateTo,
+  paymentTypeId,
+  categoryId,
+  intlLocale,
+  currency,
+}: {
   dateFrom: string;
   dateTo: string;
   paymentTypeId?: string;
-  page: number;
+  categoryId?: string;
   intlLocale: string;
   currency: string;
 }) {
-  const supabase = await createClient();
-  const { t } = await getI18n("expenses");
-  const perPage = 25;
-  const from = (page - 1) * perPage;
-  const to = from + perPage - 1;
-
-  let query = supabase
-    .from("expenses_with_payment_type")
-    .select("*", { count: "exact" })
-    .eq("user_id", userId)
-    .gte("date", dateFrom)
-    .lte("date", dateTo)
-    .order("date", { ascending: false })
-    .range(from, to);
-
-  if (paymentTypeId) {
-    query = query.eq("payment_type_id", paymentTypeId);
-  }
-
-  const { data: expenses, count } = await query;
-  const totalPages = Math.ceil((count ?? 0) / perPage);
-
-  if (!expenses?.length) {
-    return (
-      <div className="text-center py-16 text-gray-400 dark:text-gray-500">
-        {t("noExpenses")}
-      </div>
-    );
-  }
+  const { expenses, count } = await getExpenses({
+    dateFrom,
+    dateTo,
+    paymentTypeId,
+    categoryId,
+    page: 1,
+    perPage: 25,
+  });
 
   return (
-    <div className="space-y-4">
-      <div className="text-sm text-gray-500 dark:text-gray-400">
-        {t("expenseCount", { count: count ?? 0, page, totalPages })}
-      </div>
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-        {/* Mobile card list */}
-        <div className="divide-y divide-gray-100 dark:divide-gray-800 md:hidden">
-          {expenses.map((e) => (
-            <div key={e.id} className="p-4 space-y-2">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white text-sm truncate">{e.description}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{formatDate(e.date, intlLocale)}</p>
-                </div>
-                <span className="font-semibold text-gray-900 dark:text-white text-sm shrink-0">
-                  {formatCurrency(Number(e.amount), intlLocale, currency)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 max-w-[150px] truncate">
-                    {e.category_name ?? t("uncategorized")}
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 max-w-[150px] truncate">
-                    {e.payment_type_name}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <Link
-                    href={`/expenses/${e.id}`}
-                    className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                  >
-                    <LinkPendingIndicator className="h-3.5 w-3.5" />
-                    {t("edit")}
-                  </Link>
-                  <DeleteExpenseBtn id={e.id} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Desktop table view */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
-              <tr>
-                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("dateHeader")}</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("descriptionHeader")}</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("categoryHeader")}</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("typeHeader")}</th>
-                <th className="text-right px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("amountHeader")}</th>
-                <th className="px-6 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-              {expenses.map((e) => (
-                <tr key={e.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                    {formatDate(e.date, intlLocale)}
-                  </td>
-                  <td className="px-6 py-3 font-medium text-gray-900 dark:text-white max-w-xs truncate">
-                    {e.description}
-                  </td>
-                  <td className="px-6 py-3 text-gray-600 dark:text-gray-400">
-                    {e.category_name ?? t("uncategorized")}
-                  </td>
-                  <td className="px-6 py-3 text-gray-600 dark:text-gray-400">{e.payment_type_name}</td>
-                  <td className="px-6 py-3 text-right font-semibold text-gray-900 dark:text-white">
-                    {formatCurrency(Number(e.amount), intlLocale, currency)}
-                  </td>
-                  <td className="px-6 py-3">
-                    <div className="flex gap-3 justify-end">
-                      <Link
-                        href={`/expenses/${e.id}`}
-                        className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                      >
-                        <LinkPendingIndicator className="h-3.5 w-3.5" />
-                        {t("edit")}
-                      </Link>
-                      <DeleteExpenseBtn id={e.id} />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <ExpenseInfiniteList
+      key={`${dateFrom}_${dateTo}_${paymentTypeId || ""}_${categoryId || ""}`}
+      initialExpenses={expenses}
+      initialCount={count}
+      dateFrom={dateFrom}
+      dateTo={dateTo}
+      paymentTypeId={paymentTypeId}
+      categoryId={categoryId}
+      intlLocale={intlLocale}
+      currency={currency}
+    />
   );
 }
 
@@ -162,13 +75,20 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
   const dateFrom = params.date_from ?? monthStartISO();
   const dateTo = params.date_to ?? monthEndISO();
   const paymentTypeId = params.payment_type_id;
-  const page = parseInt(params.page ?? "1", 10);
+  const categoryId = params.category_id;
 
-  const { data: paymentTypes } = await supabase
-    .from("payment_types")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("name");
+  const [{ data: paymentTypes }, { data: categories }] = await Promise.all([
+    supabase
+      .from("payment_types")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("name"),
+    supabase
+      .from("categories")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("name"),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -184,16 +104,18 @@ export default async function ExpensesPage({ searchParams }: PageProps) {
       </div>
 
       <Suspense>
-        <ExpenseFilters paymentTypes={paymentTypes ?? []} />
+        <ExpenseFilters
+          paymentTypes={paymentTypes ?? []}
+          categories={categories ?? []}
+        />
       </Suspense>
 
       <Suspense fallback={<LoadingState className="py-8" />}>
         <ExpenseTable
-          userId={user.id}
           dateFrom={dateFrom}
           dateTo={dateTo}
           paymentTypeId={paymentTypeId}
-          page={page}
+          categoryId={categoryId}
           intlLocale={intlLocale}
           currency={currency}
         />

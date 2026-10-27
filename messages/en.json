@@ -84,8 +84,13 @@
     "title": "Expenses",
     "addExpense": "+ Add expense",
     "loading": "Loading…",
+    "loadingMore": "Loading more expenses…",
+    "allLoaded": "All expenses loaded",
+    "loadMoreError": "Error loading more expenses.",
+    "retry": "Try again",
     "noExpenses": "No expenses found for this period.",
-    "expenseCount": "{count, plural, one {# expense} other {# expenses}} · Page {page} of {totalPages}",
+    "expenseCount": "{count, plural, one {# expense} other {# expenses}}",
+    "showingCount": "{count, plural, one {# expense} other {# expenses}} · Showing {loaded} of {count}",
     "dateHeader": "Date",
     "descriptionHeader": "Description",
     "categoryHeader": "Category",
@@ -115,7 +120,10 @@
     "from": "From",
     "to": "To",
     "paymentType": "Payment type",
-    "allTypes": "All types"
+    "allTypes": "All types",
+    "category": "Category",
+    "allCategories": "All categories",
+    "uncategorized": "Uncategorized"
   },
   "paymentTypes": {
     "title": "Payment Types",

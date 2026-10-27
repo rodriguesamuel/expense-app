@@ -84,8 +84,13 @@
     "title": "Despesas",
     "addExpense": "+ Adicionar despesa",
     "loading": "Carregando…",
+    "loadingMore": "Carregando mais despesas…",
+    "allLoaded": "Todas as despesas foram carregadas",
+    "loadMoreError": "Erro ao carregar mais despesas.",
+    "retry": "Tentar novamente",
     "noExpenses": "Nenhuma despesa encontrada neste período.",
-    "expenseCount": "{count, plural, one {# despesa} other {# despesas}} · Página {page} de {totalPages}",
+    "expenseCount": "{count, plural, one {# despesa} other {# despesas}}",
+    "showingCount": "{count, plural, one {# despesa} other {# despesas}} · Exibindo {loaded} de {count}",
     "dateHeader": "Data",
     "descriptionHeader": "Descrição",
     "categoryHeader": "Categoria",
@@ -115,7 +120,10 @@
     "from": "De",
     "to": "Até",
     "paymentType": "Forma de pagamento",
-    "allTypes": "Todos os tipos"
+    "allTypes": "Todos os tipos",
+    "category": "Categoria",
+    "allCategories": "Todas as categorias",
+    "uncategorized": "Sem categoria"
   },
   "paymentTypes": {
     "title": "Formas de Pagamento",

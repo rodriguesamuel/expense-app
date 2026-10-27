@@ -5,13 +5,14 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { monthStartISO, monthEndISO } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
-import type { PaymentType } from "@/types";
+import type { PaymentType, Category } from "@/types";
 
 interface Props {
   paymentTypes: PaymentType[];
+  categories: Category[];
 }
 
-export function ExpenseFilters({ paymentTypes }: Props) {
+export function ExpenseFilters({ paymentTypes, categories }: Props) {
   const t = useTranslations("filters");
   const router = useRouter();
   const pathname = usePathname();
@@ -49,6 +50,22 @@ export function ExpenseFilters({ paymentTypes }: Props) {
           onChange={(e) => update("date_to", e.target.value)}
           className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+      </div>
+      <div className="col-span-2 sm:col-span-1 sm:w-48 min-w-0">
+        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t("category")}</label>
+        <select
+          defaultValue={searchParams.get("category_id") ?? ""}
+          onChange={(e) => update("category_id", e.target.value)}
+          className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">{t("allCategories")}</option>
+          <option value="none">{t("uncategorized")}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id} className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+              {c.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="col-span-2 sm:col-span-1 sm:w-48 min-w-0">
         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t("paymentType")}</label>
