@@ -6,8 +6,8 @@ import { monthStartISO, monthEndISO, formatCurrency, getLocaleConfig } from "@/l
 import { SummaryCards } from "./summary-cards";
 import { PaymentTypePie } from "./payment-type-pie";
 import { MonthlyBarChart } from "./monthly-bar-chart";
-import { DescriptionBarChart } from "./description-bar-chart";
-import { DescriptionTable } from "./description-table";
+import { CategoryBarChart } from "./category-bar-chart";
+import { CategoryTable } from "./category-table";
 import { CsvExportBtn } from "./csv-export-btn";
 import { CategoryBudgetReport } from "./category-budget-report";
 import { LoadingState } from "@/components/ui/loading-state";
@@ -175,28 +175,28 @@ export function ReportsClient() {
             </div>
           )}
 
-          {summary.byDescription && summary.byDescription.length > 0 && (
+          {summary.byCategory && summary.byCategory.length > 0 && (
             <div className="space-y-4 pt-2">
               <div className="border-t border-gray-200 dark:border-gray-800 pt-6">
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                  {t("byDescriptionSection")}
+                  {t("byCategorySection")}
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                 <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
                   <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                    {t("byDescriptionChart")}
+                    {t("byCategoryChart")}
                   </h3>
-                  <DescriptionBarChart
-                    data={summary.byDescription}
+                  <CategoryBarChart
+                    data={summary.byCategory}
                     intlLocale={intlLocale}
                     currency={currency}
                   />
                 </div>
 
-                <DescriptionTable
-                  data={summary.byDescription}
+                <CategoryTable
+                  data={summary.byCategory}
                   intlLocale={intlLocale}
                   currency={currency}
                 />

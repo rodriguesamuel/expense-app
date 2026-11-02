@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { formatCurrency } from "@/lib/utils";
-import type { DescriptionSummaryItem } from "@/types";
+import type { CategorySummaryItem } from "@/types";
 
 interface Props {
-  data: DescriptionSummaryItem[];
+  data: CategorySummaryItem[];
   intlLocale?: string;
   currency?: string;
   topCount?: number;
 }
 
-export function DescriptionTable({
+export function CategoryTable({
   data,
   intlLocale = "pt-BR",
   currency = "BRL",
@@ -29,7 +29,7 @@ export function DescriptionTable({
 
   let displayRows: Array<{
     id: string;
-    description: string;
+    categoryName: string;
     count: number;
     total: number;
     percentage: number;
@@ -38,8 +38,8 @@ export function DescriptionTable({
 
   if (!showAll && hasRemaining) {
     const topItems = data.slice(0, topCount).map((item, idx) => ({
-      id: `top-${idx}-${item.description}`,
-      description: item.description,
+      id: `top-${idx}-${item.categoryName}`,
+      categoryName: item.categoryName,
       count: item.count,
       total: item.total,
       percentage: item.percentage,
@@ -58,7 +58,7 @@ export function DescriptionTable({
       ...topItems,
       {
         id: "other-aggregate",
-        description: t("other"),
+        categoryName: t("other"),
         count: otherCount,
         total: otherTotal,
         percentage: otherPercentage,
@@ -67,8 +67,8 @@ export function DescriptionTable({
     ];
   } else {
     displayRows = data.map((item, idx) => ({
-      id: `all-${idx}-${item.description}`,
-      description: item.description,
+      id: `all-${idx}-${item.categoryName}`,
+      categoryName: item.categoryName,
       count: item.count,
       total: item.total,
       percentage: item.percentage,
@@ -79,7 +79,7 @@ export function DescriptionTable({
     <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col h-full">
       <div className="px-4 sm:px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between gap-2">
         <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200">
-          {t("detailByDescription")}
+          {t("detailByCategory")}
         </h3>
         {hasRemaining && (
           <button
@@ -99,7 +99,7 @@ export function DescriptionTable({
           <thead className="bg-gray-50 dark:bg-gray-800/90 sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800">
             <tr>
               <th className="text-left px-4 sm:px-6 py-3 font-medium text-gray-500 dark:text-gray-400">
-                {t("descriptionHeader")}
+                {t("categoryHeader")}
               </th>
               <th className="text-right px-4 sm:px-6 py-3 font-medium text-gray-500 dark:text-gray-400">
                 {t("countHeader")}
@@ -123,8 +123,8 @@ export function DescriptionTable({
                 }
               >
                 <td className="px-4 sm:px-6 py-3 font-medium text-gray-900 dark:text-white flex items-center gap-2">
-                  <span className="truncate max-w-[160px] sm:max-w-[220px]" title={row.description}>
-                    {row.description}
+                  <span className="truncate max-w-[160px] sm:max-w-[220px]" title={row.categoryName || t("uncategorized")}>
+                    {row.categoryName || t("uncategorized")}
                   </span>
                   {row.isOther && (
                     <span className="text-[10px] bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded font-normal">
@@ -147,4 +147,3 @@ export function DescriptionTable({
     </div>
   );
 }
-

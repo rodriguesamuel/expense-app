@@ -12,18 +12,18 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { formatCurrency } from "@/lib/utils";
-import type { DescriptionSummaryItem } from "@/types";
+import type { CategorySummaryItem } from "@/types";
 
 const COLORS = ["#6366f1", "#3b82f6", "#0ea5e9", "#10b981", "#f59e0b", "#ec4899"];
 
 interface Props {
-  data: DescriptionSummaryItem[];
+  data: CategorySummaryItem[];
   intlLocale?: string;
   currency?: string;
   topCount?: number;
 }
 
-export function DescriptionBarChart({
+export function CategoryBarChart({
   data,
   intlLocale = "pt-BR",
   currency = "BRL",
@@ -40,13 +40,13 @@ export function DescriptionBarChart({
   const remainingItems = data.slice(topCount);
 
   const chartData: Array<{
-    description: string;
+    categoryName: string;
     total: number;
     count: number;
     percentage: number;
     isOther: boolean;
   }> = topItems.map((item) => ({
-    description: item.description,
+    categoryName: item.categoryName,
     total: item.total,
     count: item.count,
     percentage: item.percentage,
@@ -63,7 +63,7 @@ export function DescriptionBarChart({
     );
 
     chartData.push({
-      description: t("other"),
+      categoryName: t("other"),
       total: otherTotal,
       count: otherCount,
       percentage: otherPercentage,
@@ -95,13 +95,13 @@ export function DescriptionBarChart({
         />
         <YAxis
           type="category"
-          dataKey="description"
+          dataKey="categoryName"
           tick={{ fontSize: 12, fill: "var(--chart-axis, #6b7280)" }}
           axisLine={false}
           tickLine={false}
           width={110}
           tickFormatter={(val: string) =>
-            val.length > 13 ? `${val.slice(0, 13)}…` : val
+            val ? (val.length > 13 ? `${val.slice(0, 13)}…` : val) : t("uncategorized")
           }
         />
         <Tooltip
@@ -110,7 +110,7 @@ export function DescriptionBarChart({
             const item = payload[0].payload as (typeof chartData)[number];
             return (
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md rounded-lg p-2.5 text-xs">
-                <p className="font-semibold text-gray-900 dark:text-white mb-1">{item.description}</p>
+                <p className="font-semibold text-gray-900 dark:text-white mb-1">{item.categoryName || t("uncategorized")}</p>
                 <p className="text-gray-600 dark:text-gray-300">
                   <span className="font-medium">{chartT("total")}:</span>{" "}
                   {formatCurrency(item.total, intlLocale, currency)}
@@ -134,4 +134,3 @@ export function DescriptionBarChart({
     </ResponsiveContainer>
   );
 }
-

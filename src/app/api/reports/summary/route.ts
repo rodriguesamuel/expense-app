@@ -104,29 +104,27 @@ export async function GET(request: NextRequest) {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([month, d]) => ({ month, total: Number(d.total.toFixed(2)), count: d.count }));
 
-  // Group by description
-  const descMap: Record<string, { description: string; total: number; count: number }> = {};
+  // Group by category
+  const categoryMap: Record<string, { categoryName: string; total: number; count: number }> = {};
   for (const e of rows) {
-    const rawDesc = (e.description ?? "").trim();
-    if (!rawDesc) continue;
-    const key = rawDesc.toLowerCase();
-    if (!descMap[key]) {
-      descMap[key] = {
-        description: rawDesc,
+    const key = e.category_id ?? "uncategorized";
+    if (!categoryMap[key]) {
+      categoryMap[key] = {
+        categoryName: e.category_name ?? "",
         total: 0,
         count: 0,
       };
     }
-    descMap[key].total += Number(e.amount);
-    descMap[key].count += 1;
+    categoryMap[key].total += Number(e.amount);
+    categoryMap[key].count += 1;
   }
-  const byDescription = Object.values(descMap)
+  const byCategory = Object.values(categoryMap)
     .sort((a, b) => b.total - a.total)
-    .map((d) => ({
-      description: d.description,
-      total: Number(d.total.toFixed(2)),
-      count: d.count,
-      percentage: total > 0 ? Number(((d.total / total) * 100).toFixed(1)) : 0,
+    .map((category) => ({
+      categoryName: category.categoryName,
+      total: Number(category.total.toFixed(2)),
+      count: category.count,
+      percentage: total > 0 ? Number(((category.total / total) * 100).toFixed(1)) : 0,
     }));
 
   const summary: ReportSummary = {
@@ -137,7 +135,7 @@ export async function GET(request: NextRequest) {
     byCategoryBudget,
     byPaymentType,
     byMonth,
-    byDescription,
+    byCategory,
   };
 
   return NextResponse.json(summary);

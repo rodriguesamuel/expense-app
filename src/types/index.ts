@@ -16,8 +16,8 @@ export interface CategoryBudgetSummary {
   percentage: number;
 }
 
-export interface DescriptionSummaryItem {
-  description: string;
+export interface CategorySummaryItem {
+  categoryName: string;
   total: number;
   count: number;
   percentage: number;
@@ -41,7 +41,7 @@ export interface ReportSummary {
     total: number;
     count: number;
   }[];
-  byDescription: DescriptionSummaryItem[];
+  byCategory: CategorySummaryItem[];
 }
 
 export interface ActionResult<T = void> {
