@@ -29,8 +29,12 @@
     "category": "Category",
     "selectCategory": "Select a category…",
     "month": "Month",
+    "listMonth": "List month",
     "amount": "Budget ({currency})",
     "save": "Save budget",
+    "edit": "Edit",
+    "copyPrevious": "Copy previous month",
+    "copying": "Copying…",
     "amountHeader": "Defined amount",
     "unknownCategory": "Category not found",
     "delete": "Delete"

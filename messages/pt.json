@@ -29,8 +29,12 @@
     "category": "Categoria",
     "selectCategory": "Selecione uma categoria…",
     "month": "Mês",
+    "listMonth": "Listar mês",
     "amount": "Orçamento ({currency})",
     "save": "Salvar orçamento",
+    "edit": "Editar",
+    "copyPrevious": "Copiar mês anterior",
+    "copying": "Copiando…",
     "amountHeader": "Valor definido",
     "unknownCategory": "Categoria não encontrada",
     "delete": "Excluir"
