@@ -42,9 +42,9 @@ export default async function DashboardPage() {
   );
 
   const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
   sixMonthsAgo.setDate(1);
-  const sixMonthsAgoStr = sixMonthsAgo.toISOString().split("T")[0];
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
+  const sixMonthsAgoStr = monthStartISO(sixMonthsAgo);
 
   const { data: chartData } = await supabase
     .from("expenses")
@@ -58,15 +58,22 @@ export default async function DashboardPage() {
     const month = e.date.slice(0, 7);
     byMonth[month] = (byMonth[month] ?? 0) + Number(e.amount);
   }
-  const monthlyChartData = Object.entries(byMonth)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([month, total]) => ({
-      month: new Date(month + "-01").toLocaleDateString(intlLocale, {
+  const monthlyChartData = Array.from({ length: 6 }, (_, index) => {
+    const monthDate = new Date(
+      sixMonthsAgo.getFullYear(),
+      sixMonthsAgo.getMonth() + index,
+      1
+    );
+    const month = monthStartISO(monthDate).slice(0, 7);
+
+    return {
+      month: monthDate.toLocaleDateString(intlLocale, {
         month: "short",
         year: "2-digit",
       }),
-      total: Number(total.toFixed(2)),
-    }));
+      total: Number((byMonth[month] ?? 0).toFixed(2)),
+    };
+  });
 
   const expenseCount = monthData?.length ?? 0;
 
