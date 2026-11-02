@@ -9,6 +9,7 @@ import { MonthlyBarChart } from "./monthly-bar-chart";
 import { DescriptionBarChart } from "./description-bar-chart";
 import { DescriptionTable } from "./description-table";
 import { CsvExportBtn } from "./csv-export-btn";
+import { CategoryBudgetReport } from "./category-budget-report";
 import { LoadingState } from "@/components/ui/loading-state";
 import type { ReportSummary } from "@/types";
 
@@ -96,6 +97,8 @@ export function ReportsClient() {
 
       {!loading && summary && (
         <>
+          <CategoryBudgetReport rows={summary.byCategoryBudget} />
+
           <SummaryCards
             total={summary.total}
             count={summary.count}

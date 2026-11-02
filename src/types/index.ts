@@ -28,6 +28,7 @@ export interface ReportSummary {
   total: number;
   count: number;
   dailyAverage: number;
+  byCategoryBudget: CategoryBudgetSummary[];
   byPaymentType: {
     paymentTypeId: string;
     paymentTypeName: string;

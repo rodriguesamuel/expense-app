@@ -15,15 +15,30 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "date_from and date_to are required" }, { status: 400 });
   }
 
-  const { data: expenses, error } = await supabase
-    .from("expenses_with_payment_type")
-    .select("*")
-    .eq("user_id", user.id)
-    .gte("payment_date", dateFrom)
-    .lte("payment_date", dateTo);
+  const budgetMonth = `${dateFrom.slice(0, 7)}-01`;
+  const [{ data: expenses, error: expensesError }, { data: categories, error: categoriesError }, { data: budgets, error: budgetsError }] =
+    await Promise.all([
+      supabase
+        .from("expenses_with_payment_type")
+        .select("*")
+        .eq("user_id", user.id)
+        .gte("payment_date", dateFrom)
+        .lte("payment_date", dateTo),
+      supabase
+        .from("categories")
+        .select("id,name")
+        .eq("user_id", user.id)
+        .order("name"),
+      supabase
+        .from("budgets")
+        .select("category_id,amount")
+        .eq("user_id", user.id)
+        .eq("month", budgetMonth),
+    ]);
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  const queryError = expensesError ?? categoriesError ?? budgetsError;
+  if (queryError) {
+    return NextResponse.json({ error: queryError.message }, { status: 500 });
   }
 
   const rows = expenses ?? [];
@@ -37,6 +52,23 @@ export async function GET(request: NextRequest) {
     ) + 1
   );
   const dailyAverage = count > 0 ? total / days : 0;
+
+  const byCategoryBudget = (categories ?? []).map((category) => {
+    const spent = rows
+      .filter((expense) => expense.category_id === category.id)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    const budget = Number(
+      (budgets ?? []).find((item) => item.category_id === category.id)?.amount ?? 0
+    );
+    return {
+      categoryId: category.id,
+      categoryName: category.name,
+      spent: Number(spent.toFixed(2)),
+      budget,
+      difference: Number((budget - spent).toFixed(2)),
+      percentage: budget ? Number(((spent / budget) * 100).toFixed(1)) : 0,
+    };
+  });
 
   // Group by payment type
   const ptMap: Record<string, { paymentTypeId: string; paymentTypeName: string; total: number; count: number }> = {};
@@ -102,6 +134,7 @@ export async function GET(request: NextRequest) {
     total: Number(total.toFixed(2)),
     count,
     dailyAverage: Number(dailyAverage.toFixed(2)),
+    byCategoryBudget,
     byPaymentType,
     byMonth,
     byDescription,
