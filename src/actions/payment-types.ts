@@ -20,6 +20,9 @@ export async function createPaymentType(
 
   const parsed = paymentTypeSchema.safeParse({
     name: formData.get("name") as string,
+    type: formData.get("type") as string,
+    cutoff_day: formData.get("cutoff_day") || undefined,
+    due_day: formData.get("due_day") || undefined,
   });
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -29,6 +32,9 @@ export async function createPaymentType(
     user_id: user.id,
     name: parsed.data.name,
     is_system: false,
+    type: parsed.data.type,
+    cutoff_day: parsed.data.cutoff_day ?? null,
+    due_day: parsed.data.due_day ?? null,
   });
 
   if (error) {
@@ -56,6 +62,9 @@ export async function updatePaymentType(
 
   const parsed = paymentTypeSchema.safeParse({
     name: formData.get("name") as string,
+    type: formData.get("type") as string,
+    cutoff_day: formData.get("cutoff_day") || undefined,
+    due_day: formData.get("due_day") || undefined,
   });
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -63,7 +72,12 @@ export async function updatePaymentType(
 
   const { error } = await supabase
     .from("payment_types")
-    .update({ name: parsed.data.name })
+    .update({
+      name: parsed.data.name,
+      type: parsed.data.type,
+      cutoff_day: parsed.data.cutoff_day ?? null,
+      due_day: parsed.data.due_day ?? null,
+    })
     .eq("id", id)
     .eq("user_id", user.id);
 

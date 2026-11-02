@@ -29,11 +29,12 @@ Personal expense tracking app built with Next.js 16 + Supabase.
    ```sql
    NOTIFY pgrst, 'reload schema';
    ```
-5. Enable `pg_cron` extension and run the keepalive query:
+5. Run `supabase/migrations/003_credit_card_installments.sql` to enable credit card configuration, payment dates, and installments.
+6. Enable `pg_cron` extension and run the keepalive query:
    ```sql
    SELECT cron.schedule('keepalive', '0 12 */4 * *', 'SELECT 1');
    ```
-6. Copy Project URL and anon key from Project Settings → API
+7. Copy Project URL and anon key from Project Settings → API
 
 ### 2. Local development
 

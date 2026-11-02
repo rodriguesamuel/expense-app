@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { createExpense, updateExpense } from "@/actions/expenses";
-import { todayISO, getLocaleConfig } from "@/lib/utils";
+import { todayISO, getLocaleConfig, calculatePaymentDates, splitInstallmentAmounts, formatDate, formatCurrency } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 import { LinkPendingIndicator } from "@/components/ui/link-pending-indicator";
 import type { Category, ExpenseWithPaymentType, PaymentType } from "@/types";
@@ -22,6 +22,12 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
 
   const [error, setError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [paymentTypeId, setPaymentTypeId] = useState(existing?.payment_type_id ?? "");
+  const [installmentCount, setInstallmentCount] = useState(existing?.installment_count ?? 1);
+  const [amount, setAmount] = useState(
+    existing ? (Number(existing.amount) * (existing.installment_count ?? 1)).toFixed(2) : ""
+  );
+  const [purchaseDate, setPurchaseDate] = useState(existing?.date ?? todayISO());
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -41,6 +47,15 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
   function field(name: string) {
     return errors[name]?.[0];
   }
+
+  const selectedPaymentType = paymentTypes.find((paymentType) => paymentType.id === paymentTypeId);
+  const installmentPreview = useMemo(() => {
+    if (selectedPaymentType?.type !== "credit_card" || !selectedPaymentType.cutoff_day || !selectedPaymentType.due_day) {
+      return [];
+    }
+    return calculatePaymentDates(purchaseDate, selectedPaymentType.cutoff_day, selectedPaymentType.due_day, installmentCount)
+      .map((date, index) => ({ date, amount: splitInstallmentAmounts(Number(amount) || 0, installmentCount)[index] }));
+  }, [selectedPaymentType, purchaseDate, amount, installmentCount]);
 
   return (
     <form method="post" onSubmit={handleSubmit} className="space-y-5 max-w-lg">
@@ -104,7 +119,8 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
           type="number"
           step="0.01"
           min="0.01"
-          defaultValue={existing?.amount?.toString() ?? ""}
+          value={amount}
+          onChange={(event) => setAmount(event.target.value)}
           required
           className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder={t("amountPlaceholder")}
@@ -126,7 +142,12 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
         <select
           id="payment_type_id"
           name="payment_type_id"
-          defaultValue={existing?.payment_type_id ?? ""}
+          value={paymentTypeId}
+          onChange={(event) => {
+            setPaymentTypeId(event.target.value);
+            const nextType = paymentTypes.find((paymentType) => paymentType.id === event.target.value);
+            if (nextType?.type !== "credit_card") setInstallmentCount(1);
+          }}
           required
           className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
@@ -153,6 +174,39 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
         )}
       </div>
 
+      {selectedPaymentType?.type === "credit_card" && (
+        <div className="space-y-3 rounded-lg border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20 p-3">
+          <div>
+            <label htmlFor="installment_count" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t("installmentCount")}
+            </label>
+            <input
+              id="installment_count"
+              name="installment_count"
+              type="number"
+              min="1"
+              max="120"
+              value={installmentCount}
+              onChange={(event) => setInstallmentCount(Math.max(1, Number(event.target.value) || 1))}
+              className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm"
+            />
+          </div>
+          {installmentPreview.length > 0 && (
+            <div className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="font-medium mb-1">{t("installmentPreview")}</p>
+              <ul className="space-y-1">
+                {installmentPreview.map((item, index) => (
+                  <li key={`${item.date}-${index}`} className="flex justify-between">
+                    <span>{index + 1}/{installmentCount}</span>
+                    <span>{formatDate(item.date, locale === "pt" ? "pt-BR" : "en-US")} · {formatCurrency(item.amount, currency === "BRL" ? "pt-BR" : "en-US", currency)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
       <div>
         <label
           htmlFor="date"
@@ -164,7 +218,8 @@ export function ExpenseForm({ paymentTypes, categories, existing }: Props) {
           id="date"
           name="date"
           type="date"
-          defaultValue={existing?.date ?? todayISO()}
+          value={purchaseDate}
+          onChange={(event) => setPurchaseDate(event.target.value)}
           required
           className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

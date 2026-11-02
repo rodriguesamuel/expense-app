@@ -19,8 +19,8 @@ export async function GET(request: NextRequest) {
     .from("expenses_with_payment_type")
     .select("*")
     .eq("user_id", user.id)
-    .gte("date", dateFrom)
-    .lte("date", dateTo);
+    .gte("payment_date", dateFrom)
+    .lte("payment_date", dateTo);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
   // Group by month
   const monthMap: Record<string, { total: number; count: number }> = {};
   for (const e of rows) {
-    const month = e.date.slice(0, 7);
+    const month = e.payment_date.slice(0, 7);
     if (!monthMap[month]) monthMap[month] = { total: 0, count: 0 };
     monthMap[month].total += Number(e.amount);
     monthMap[month].count += 1;

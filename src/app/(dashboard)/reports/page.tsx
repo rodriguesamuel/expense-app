@@ -16,7 +16,7 @@ export default async function ReportsPage() {
   const to = monthEndISO();
   const [{ data: categories }, { data: expenses }, { data: budgets }] = await Promise.all([
     supabase.from("categories").select("id,name").eq("user_id", user.id).order("name"),
-    supabase.from("expenses").select("category_id,amount").eq("user_id", user.id).gte("date", from).lte("date", to),
+    supabase.from("expenses").select("category_id,amount").eq("user_id", user.id).gte("payment_date", from).lte("payment_date", to),
     supabase.from("budgets").select("category_id,amount").eq("user_id", user.id).eq("month", from),
   ]);
   const rows = (categories ?? []).map((category) => {

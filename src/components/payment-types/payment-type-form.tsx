@@ -14,6 +14,7 @@ interface Props {
 export function PaymentTypeForm({ existing, onDone }: Props) {
   const t = useTranslations("paymentTypeForm");
   const [error, setError] = useState<string | null>(null);
+  const [type, setType] = useState(existing?.type ?? "other");
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -49,6 +50,39 @@ export function PaymentTypeForm({ existing, onDone }: Props) {
           placeholder={t("namePlaceholder")}
         />
       </div>
+
+      <div>
+        <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          {t("typeLabel")}
+        </label>
+        <select
+          id="type"
+          name="type"
+          value={type}
+          onChange={(event) => setType(event.target.value)}
+          className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm"
+        >
+          <option value="other">{t("other")}</option>
+          <option value="credit_card">{t("creditCard")}</option>
+        </select>
+      </div>
+
+      {type === "credit_card" && (
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label htmlFor="cutoff_day" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t("cutoffDay")}
+            </label>
+            <input id="cutoff_day" name="cutoff_day" type="number" min="1" max="31" required defaultValue={existing?.cutoff_day ?? ""} className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label htmlFor="due_day" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t("dueDay")}
+            </label>
+            <input id="due_day" name="due_day" type="number" min="1" max="31" required defaultValue={existing?.due_day ?? ""} className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm" />
+          </div>
+        </div>
+      )}
 
       {error && (
         <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-lg px-3 py-2">

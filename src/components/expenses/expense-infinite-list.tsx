@@ -41,8 +41,15 @@ export function ExpenseInfiniteList({
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const handleDeleted = useCallback((id: string) => {
-    setExpenses((prev) => prev.filter((e) => e.id !== id));
-    setTotalCount((prev) => Math.max(0, prev - 1));
+    setExpenses((prev) => {
+      const deleted = prev.find((expense) => expense.id === id);
+      const groupId = deleted?.installment_group_id;
+      const remaining = prev.filter((expense) =>
+        groupId ? expense.installment_group_id !== groupId : expense.id !== id
+      );
+      setTotalCount((count) => Math.max(0, count - (prev.length - remaining.length)));
+      return remaining;
+    });
   }, []);
 
   const loadMore = useCallback(async () => {
@@ -128,7 +135,15 @@ export function ExpenseInfiniteList({
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-gray-900 dark:text-white text-sm truncate">{e.description}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{formatDate(e.date, intlLocale)}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    {t("purchaseDate")}: {formatDate(e.date, intlLocale)}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {t("paymentDate")}: {formatDate(e.payment_date, intlLocale)}
+                  </p>
+                  {e.installment_number && e.installment_count && (
+                    <p className="text-xs text-gray-400 dark:text-gray-500">{t("installment", { current: e.installment_number, total: e.installment_count })}</p>
+                  )}
                 </div>
                 <span className="font-semibold text-gray-900 dark:text-white text-sm shrink-0">
                   {formatCurrency(Number(e.amount), intlLocale, currency)}
@@ -163,7 +178,8 @@ export function ExpenseInfiniteList({
           <table className="w-full text-sm">
             <thead className="bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
               <tr>
-                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("dateHeader")}</th>
+                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("purchaseDate")}</th>
+                <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("paymentDate")}</th>
                 <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("descriptionHeader")}</th>
                 <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("categoryHeader")}</th>
                 <th className="text-left px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t("typeHeader")}</th>
@@ -176,6 +192,12 @@ export function ExpenseInfiniteList({
                 <tr key={e.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                   <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {formatDate(e.date, intlLocale)}
+                  </td>
+                  <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                    {formatDate(e.payment_date, intlLocale)}
+                    {e.installment_number && e.installment_count && (
+                      <span className="block text-xs text-gray-400">{t("installment", { current: e.installment_number, total: e.installment_count })}</span>
+                    )}
                   </td>
                   <td className="px-6 py-3 font-medium text-gray-900 dark:text-white max-w-xs truncate">
                     {e.description}

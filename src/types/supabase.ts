@@ -18,7 +18,11 @@ export interface Database {
           payment_type_id: string;
           category_id: string | null;
           date: string;
+          payment_date: string;
           notes: string | null;
+          installment_group_id: string | null;
+          installment_number: number | null;
+          installment_count: number | null;
           created_at: string;
           updated_at: string;
         };
@@ -30,7 +34,11 @@ export interface Database {
           payment_type_id: string;
           category_id?: string | null | undefined;
           date?: string | undefined;
+          payment_date?: string | undefined;
           notes?: string | null | undefined;
+          installment_group_id?: string | null | undefined;
+          installment_number?: number | null | undefined;
+          installment_count?: number | null | undefined;
           created_at?: string | undefined;
           updated_at?: string | undefined;
         };
@@ -42,7 +50,11 @@ export interface Database {
           payment_type_id?: string | undefined;
           category_id?: string | null | undefined;
           date?: string | undefined;
+          payment_date?: string | undefined;
           notes?: string | null | undefined;
+          installment_group_id?: string | null | undefined;
+          installment_number?: number | null | undefined;
+          installment_count?: number | null | undefined;
           updated_at?: string | undefined;
         };
         Relationships: [
@@ -67,6 +79,9 @@ export interface Database {
           id: string;
           user_id: string;
           name: string;
+          type: string;
+          cutoff_day: number | null;
+          due_day: number | null;
           is_system: boolean;
           created_at: string;
           updated_at: string;
@@ -75,6 +90,9 @@ export interface Database {
           id?: string | undefined;
           user_id: string;
           name: string;
+          type?: string | undefined;
+          cutoff_day?: number | null | undefined;
+          due_day?: number | null | undefined;
           is_system?: boolean | undefined;
           created_at?: string | undefined;
           updated_at?: string | undefined;
@@ -83,6 +101,9 @@ export interface Database {
           id?: string | undefined;
           user_id?: string | undefined;
           name?: string | undefined;
+          type?: string | undefined;
+          cutoff_day?: number | null | undefined;
+          due_day?: number | null | undefined;
           is_system?: boolean | undefined;
           updated_at?: string | undefined;
         };
@@ -157,18 +178,58 @@ export interface Database {
           description: string;
           amount: number;
           date: string;
+          payment_date: string;
           notes: string | null;
+          installment_group_id: string | null;
+          installment_number: number | null;
+          installment_count: number | null;
           created_at: string;
           updated_at: string;
           payment_type_id: string;
           category_id: string | null;
           payment_type_name: string;
           category_name: string | null;
+          payment_type_kind: string;
+          cutoff_day: number | null;
+          due_day: number | null;
         };
         Relationships: [];
       };
     };
-    Functions: Record<string, never>;
+    Functions: {
+      create_expense_installments: {
+        Args: {
+          p_user_id: string;
+          p_description: string;
+          p_total_amount: number;
+          p_payment_type_id: string;
+          p_category_id: string | null;
+          p_purchase_date: string;
+          p_notes: string | null;
+          p_payment_dates: string[];
+          p_amounts: number[];
+        };
+        Returns: Database["public"]["Tables"]["expenses"]["Row"][];
+      };
+      replace_expense_installments: {
+        Args: {
+          p_user_id: string;
+          p_group_id: string;
+          p_description: string;
+          p_payment_type_id: string;
+          p_category_id: string | null;
+          p_purchase_date: string;
+          p_notes: string | null;
+          p_payment_dates: string[];
+          p_amounts: number[];
+        };
+        Returns: Database["public"]["Tables"]["expenses"]["Row"][];
+      };
+      delete_expense_series: {
+        Args: { p_user_id: string; p_expense_id: string };
+        Returns: undefined;
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

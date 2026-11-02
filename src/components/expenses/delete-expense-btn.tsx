@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { deleteExpense } from "@/actions/expenses";
 import { Spinner } from "@/components/ui/spinner";
 
@@ -12,6 +13,7 @@ interface Props {
 
 export function DeleteExpenseBtn({ id, onDeleted }: Props) {
   const t = useTranslations("deleteExpense");
+  const router = useRouter();
   const [confirm, setConfirm] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -20,6 +22,7 @@ export function DeleteExpenseBtn({ id, onDeleted }: Props) {
       const res = await deleteExpense(id);
       if (!res?.error) {
         onDeleted?.(id);
+        router.refresh();
       }
     });
   }

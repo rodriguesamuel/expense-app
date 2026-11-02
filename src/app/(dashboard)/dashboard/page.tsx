@@ -25,7 +25,7 @@ export default async function DashboardPage() {
     .from("expenses_with_payment_type")
     .select("*")
     .eq("user_id", user.id)
-    .order("date", { ascending: false })
+    .order("payment_date", { ascending: false })
     .order("created_at", { ascending: false })
     .limit(5);
 
@@ -33,8 +33,8 @@ export default async function DashboardPage() {
     .from("expenses")
     .select("amount")
     .eq("user_id", user.id)
-    .gte("date", thisMonthStart)
-    .lte("date", thisMonthEnd);
+    .gte("payment_date", thisMonthStart)
+    .lte("payment_date", thisMonthEnd);
 
   const monthTotal = (monthData ?? []).reduce(
     (sum, e) => sum + Number(e.amount),
@@ -48,14 +48,14 @@ export default async function DashboardPage() {
 
   const { data: chartData } = await supabase
     .from("expenses")
-    .select("date, amount")
+    .select("payment_date, amount")
     .eq("user_id", user.id)
-    .gte("date", sixMonthsAgoStr)
-    .lte("date", thisMonthEnd);
+    .gte("payment_date", sixMonthsAgoStr)
+    .lte("payment_date", thisMonthEnd);
 
   const byMonth: Record<string, number> = {};
   for (const e of chartData ?? []) {
-    const month = e.date.slice(0, 7);
+    const month = e.payment_date.slice(0, 7);
     byMonth[month] = (byMonth[month] ?? 0) + Number(e.amount);
   }
   const monthlyChartData = Array.from({ length: 6 }, (_, index) => {
@@ -145,7 +145,7 @@ export default async function DashboardPage() {
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-gray-900 dark:text-white truncate text-sm">{e.description}</p>
                     <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-500 dark:text-gray-400">
-                      <span>{formatDate(e.date, intlLocale)}</span>
+                      <span>{formatDate(e.payment_date, intlLocale)}</span>
                       <span>•</span>
                       <span className="truncate">{e.payment_type_name}</span>
                     </div>
@@ -166,7 +166,7 @@ export default async function DashboardPage() {
                   {recentExpenses.map((e) => (
                     <tr key={e.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                       <td className="px-6 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                        {formatDate(e.date, intlLocale)}
+                        {formatDate(e.payment_date, intlLocale)}
                       </td>
                       <td className="px-6 py-3 font-medium text-gray-900 dark:text-white max-w-xs truncate">
                         {e.description}

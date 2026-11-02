@@ -43,6 +43,35 @@ export function monthEndISO(date = new Date()) {
   return formatLocalISODate(new Date(date.getFullYear(), date.getMonth() + 1, 0));
 }
 
+export function addMonthsISO(dateStr: string, months: number, day: number) {
+  const [year, month] = dateStr.split("-").map(Number);
+  const target = new Date(year, month - 1 + months, 1);
+  const lastDay = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+  target.setDate(Math.min(day, lastDay));
+  return formatLocalISODate(target);
+}
+
+export function calculatePaymentDates(
+  purchaseDate: string,
+  cutoffDay: number,
+  dueDay: number,
+  installmentCount: number
+) {
+  const purchaseDay = Number(purchaseDate.slice(8, 10));
+  const firstMonthOffset = purchaseDay >= cutoffDay ? 1 : 0;
+  return Array.from({ length: installmentCount }, (_, index) =>
+    addMonthsISO(purchaseDate, firstMonthOffset + index, dueDay)
+  );
+}
+
+export function splitInstallmentAmounts(total: number, count: number) {
+  const totalCents = Math.round(total * 100);
+  const baseCents = Math.floor(totalCents / count);
+  const amounts = Array.from({ length: count }, () => baseCents);
+  amounts[count - 1] += totalCents - baseCents * count;
+  return amounts.map((amount) => amount / 100);
+}
+
 function formatLocalISODate(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");

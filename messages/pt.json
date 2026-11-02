@@ -92,10 +92,13 @@
     "expenseCount": "{count, plural, one {# despesa} other {# despesas}}",
     "showingCount": "{count, plural, one {# despesa} other {# despesas}} · Exibindo {loaded} de {count}",
     "dateHeader": "Data",
+    "purchaseDate": "Data da compra",
+    "paymentDate": "Data de pagamento",
     "descriptionHeader": "Descrição",
     "categoryHeader": "Categoria",
     "typeHeader": "Tipo",
     "amountHeader": "Valor",
+    "installment": "Parcela {current}/{total}",
     "uncategorized": "Sem categoria",
     "edit": "Editar"
   },
@@ -105,6 +108,8 @@
     "paymentTypeLabel": "Forma de pagamento",
     "categoryLabel": "Categoria",
     "dateLabel": "Data",
+    "installmentCount": "Número de parcelas",
+    "installmentPreview": "Prévia das parcelas",
     "notesLabel": "Observações",
     "descriptionPlaceholder": "ex: Compras no mercado",
     "amountPlaceholder": "0,00",
@@ -142,6 +147,11 @@
     "saving": "Salvando…",
     "update": "Atualizar",
     "create": "Criar"
+    ,"typeLabel": "Tipo"
+    ,"other": "Outro"
+    ,"creditCard": "Cartão de crédito"
+    ,"cutoffDay": "Dia de corte"
+    ,"dueDay": "Dia de vencimento"
   },
   "deleteExpense": {
     "delete": "Excluir",
@@ -202,6 +212,8 @@
     "dateRequired": "Data é obrigatória",
     "monthRequired": "Informe um mês válido",
     "nameRequired": "Nome é obrigatório"
+    ,"cutoffDayRequired": "Informe o dia de corte"
+    ,"dueDayRequired": "Informe o dia de vencimento"
   },
   "actions": {
     "accountCreated": "Conta criada! Verifique seu e-mail para confirmar o cadastro.",

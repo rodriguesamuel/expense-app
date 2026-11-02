@@ -12,6 +12,7 @@ export function createExpenseSchema(t: (key: string) => string) {
     payment_type_id: z.string().uuid(t("paymentTypeRequired")),
     category_id: z.string().uuid(t("categoryRequired")).optional().or(z.literal("")),
     date: z.string().min(1, t("dateRequired")),
+    installment_count: z.coerce.number().int().min(1).max(120),
     notes: z.string().max(1000).optional(),
   });
 }
@@ -21,5 +22,6 @@ export type ExpenseFormValues = {
   amount: string;
   payment_type_id: string;
   date: string;
+  installment_count: number;
   notes?: string;
 };
